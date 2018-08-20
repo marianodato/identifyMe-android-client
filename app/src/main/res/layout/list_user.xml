@@ -13,7 +13,67 @@
         />
 
     <TextView
-        android:id="@+id/txtUsername"
+        android:id="@+id/txtUserUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserFingerprintId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserFingerprintStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserDni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserIsAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserDateCreated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp" />
+
+    <TextView
+        android:id="@+id/txtUserLastUpdated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,11 +12,17 @@
         android:orientation="vertical"
         >
 
+        <TextView
+            android:id="@+id/txtUserLoginUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
         <Button
             android:id="@+id/btnAddUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add User"
+            android:text="Crear usuario"
             android:background="#BA55D3"
             android:textColor="#ffffff"
             android:layout_marginTop="5dp"
@@ -27,7 +33,7 @@
             android:id="@+id/btnGetUsersList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fetch users"
+            android:text="Listar usuarios"
             android:background="#32CD32"
             android:textColor="#ffffff"
             android:layout_marginBottom="5dp"
