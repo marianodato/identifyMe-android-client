@@ -27,14 +27,6 @@ public interface UserService {
     @DELETE("users/{id}")
     Call<User> deleteUser(@Path("id") long id, @Query("accessToken") String accessToken);
 
-    /* TODO:
-    - Paginado del search
-    - Search x fingerprintStatus,
-    - Logout
-    - Get x id
-    - Put
-    */
-
     @PUT("users/{id}")
     Call<User> updateUser(@Path("id") long id, @Query("accessToken") String accessToken, @Body User user);
 }

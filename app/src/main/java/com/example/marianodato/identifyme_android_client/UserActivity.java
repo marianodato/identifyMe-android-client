@@ -25,21 +25,37 @@ import retrofit2.Response;
 
 public class UserActivity extends AppCompatActivity {
 
-    UserService userService;
+    TextView txtUserId;
+    TextView txtUserUsername;
+    TextView txtUserPassword;
+    TextView txtUserName;
+    TextView txtUserFingerprintId;
+    TextView txtUserFingerprintStatus;
+    TextView txtUserDni;
+    TextView txtUserGender;
+    TextView txtUserEmail;
+    TextView txtUserPhoneNumber;
+    TextView txtUserIsAdmin;
+    TextView txtUserDateCreated;
+    TextView txtUserLastUpdated;
     EditText edtUserId;
     EditText edtUserUsername;
     EditText edtUserPassword;
     EditText edtUserName;
+    EditText edtUserFingerprintId;
     EditText edtUserDni;
-    RadioGroup radioGrpUserGender;
-    RadioButton radioUserGender;
     EditText edtUserEmail;
     EditText edtUserPhoneNumber;
+    EditText edtUserDateCreated;
+    EditText edtUserLastUpdated;
+    RadioGroup radioGrpUserGender;
     RadioGroup radioGrpUserIsAdmin;
+    RadioGroup radioGrpUserFingerprintStatus;
+    RadioButton radioUserGender;
     RadioButton radioUserIsAdmin;
     Button btnSave;
     Button btnDel;
-    TextView txtUserId;
+    UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +66,31 @@ public class UserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         txtUserId = (TextView) findViewById(R.id.txtUserId);
+        txtUserUsername = (TextView) findViewById(R.id.txtUserUsername);
+        txtUserPassword = (TextView) findViewById(R.id.txtUserPassword);
+        txtUserName = (TextView) findViewById(R.id.txtUserName);
+        txtUserFingerprintId = (TextView) findViewById(R.id.txtUserFingerprintId);
+        txtUserFingerprintStatus = (TextView) findViewById(R.id.txtUserFingerprintStatus);
+        txtUserDni = (TextView) findViewById(R.id.txtUserDni);
+        txtUserGender = (TextView) findViewById(R.id.txtUserGender);
+        txtUserEmail = (TextView) findViewById(R.id.txtUserEmail);
+        txtUserPhoneNumber = (TextView) findViewById(R.id.txtUserPhoneNumber);
+        txtUserIsAdmin = (TextView) findViewById(R.id.txtUserIsAdmin);
+        txtUserDateCreated = (TextView) findViewById(R.id.txtUserDateCreated);
+        txtUserLastUpdated = (TextView) findViewById(R.id.txtUserLastUpdated);
         edtUserId = (EditText) findViewById(R.id.edtUserId);
         edtUserUsername = (EditText) findViewById(R.id.edtUserUsername);
         edtUserPassword = (EditText) findViewById(R.id.edtUserPassword);
         edtUserName = (EditText) findViewById(R.id.edtUserName);
-        edtUserDni = (EditText) findViewById(R.id.edtUserDni);
-        radioGrpUserGender = (RadioGroup) findViewById(R.id.radioGrpUserGender);
+        edtUserFingerprintId = (EditText) findViewById(R.id.edtUserFingerprintId);
         edtUserEmail = (EditText) findViewById(R.id.edtUserEmail);
         edtUserPhoneNumber = (EditText) findViewById(R.id.edtUserPhoneNumber);
+        edtUserDni = (EditText) findViewById(R.id.edtUserDni);
+        edtUserDateCreated = (EditText) findViewById(R.id.edtUserDateCreated);
+        edtUserLastUpdated = (EditText) findViewById(R.id.edtUserLastUpdated);
+        radioGrpUserGender = (RadioGroup) findViewById(R.id.radioGrpUserGender);
         radioGrpUserIsAdmin = (RadioGroup) findViewById(R.id.radioGrpUserIsAdmin);
+        radioGrpUserFingerprintStatus = (RadioGroup) findViewById(R.id.radioGrpUserFingerprintStatus);
         btnSave = (Button) findViewById(R.id.btnSave);
         btnDel = (Button) findViewById(R.id.btnDel);
 
@@ -68,14 +100,69 @@ public class UserActivity extends AppCompatActivity {
         final String userLoginAccessToken = extras.getString("userLoginAccessToken");
         final String userLoginUsername = extras.getString("userLoginUsername");
         final String userId = extras.getString("userId");
+        final String userUsername = extras.getString("userUsername");
+        final String userPassword = extras.getString("userPassword");
+        final String userName = extras.getString("userName");
+        final String userFingerprintId = extras.getString("userFingerprintId");
+        final String userFingerprintStatus = extras.getString("userFingerprintStatus");
+        final String userDni = extras.getString("userDni");
+        final String userGender = extras.getString("userGender");
+        final String userEmail = extras.getString("userEmail");
+        final String userPhoneNumber = extras.getString("userPhoneNumber");
+        final boolean userIsAdmin = extras.getBoolean("userIsAdmin");
+        final String userDateCreated = extras.getString("userDateCreated");
+        final String userLastUpdated = extras.getString("userLastUpdated");
 
-        edtUserId.setText(userId);
+        final boolean isPutForm = extras.getBoolean("isPutForm");
 
-        if(userId != null && userId.trim().length() > 0 ){
+        if (isPutForm) {
+            edtUserId.setText(userId);
             edtUserId.setFocusable(false);
+            edtUserUsername.setText(userUsername);
+            edtUserUsername.setFocusable(false);
+            edtUserPassword.setText(userPassword);
+            edtUserName.setText(userName);
+            edtUserFingerprintId.setText(userFingerprintId);
+            edtUserFingerprintId.setFocusable(false);
+            edtUserEmail.setText(userEmail);
+            edtUserPhoneNumber.setText(userPhoneNumber);
+            edtUserDni.setText(userDni);
+            edtUserDateCreated.setText(userDateCreated);
+            edtUserDateCreated.setFocusable(false);
+            edtUserLastUpdated.setText(userLastUpdated);
+            edtUserLastUpdated.setFocusable(false);
+
+            if (userGender.equals("male")) {
+                radioGrpUserGender.check(R.id.radioGenderMale);
+            } else {
+                radioGrpUserGender.check(R.id.radioGenderFemale);
+            }
+
+            if (userIsAdmin) {
+                radioGrpUserIsAdmin.check(R.id.radioIsAdmin);
+            } else {
+                radioGrpUserIsAdmin.check(R.id.radioIsNotAdmin);
+            }
+
+            if (userFingerprintStatus.equals("enrolled")) {
+                radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusEnrolled);
+            } else if (userFingerprintStatus.equals("pending")) {
+                radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusPending);
+            } else {
+                radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusUnenrolled);
+            }
+
         } else {
             txtUserId.setVisibility(View.GONE);
             edtUserId.setVisibility(View.GONE);
+            txtUserFingerprintId.setVisibility(View.GONE);
+            edtUserFingerprintId.setVisibility(View.GONE);
+            txtUserFingerprintStatus.setVisibility(View.GONE);
+            radioGrpUserFingerprintStatus.setVisibility(View.GONE);
+            txtUserDateCreated.setVisibility(View.GONE);
+            edtUserDateCreated.setVisibility(View.GONE);
+            txtUserLastUpdated.setVisibility(View.GONE);
+            edtUserLastUpdated.setVisibility(View.GONE);
             btnDel.setVisibility(View.GONE);
         }
 
@@ -95,14 +182,13 @@ public class UserActivity extends AppCompatActivity {
                 radioUserIsAdmin = (RadioButton) findViewById(selectedId);
                 boolean userIsAdmin = radioUserIsAdmin.getText().equals("SÍ");
 
-                if(userId != null && userId.trim().length() > 0){
-                    //update user
+                if (isPutForm) {
+                    // TODO
                     User user = new User();
                     user.setUsername(userUsername);
                     updateUser(userLoginAccessToken, userLoginUsername, Long.parseLong(userId), user);
                 } else {
                     if (validateCreateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber)) {
-                        //add user
                         User user = new User(userUsername, userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin);
                         addUser(userLoginAccessToken, userLoginUsername, user);
                     }
@@ -252,7 +338,6 @@ public class UserActivity extends AppCompatActivity {
                 finish();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

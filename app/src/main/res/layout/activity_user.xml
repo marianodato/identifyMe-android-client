@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -70,6 +69,66 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
+
+            <TextView
+                android:id="@+id/txtUserFingerprintId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="ID DE HUELLA"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/edtUserFingerprintId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/txtUserFingerprintStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="ESTADO DE HUELLA"
+                android:textSize="20dp" />
+
+            <RadioGroup
+                android:id="@+id/radioGrpUserFingerprintStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+
+                <RadioButton
+                    android:id="@+id/radioFingerprintStatusUnenrolled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:checked="true"
+                    android:layout_weight="1"
+                    android:textSize="14dp"
+                    android:text="NO CARGADA" />
+
+                <RadioButton
+                    android:id="@+id/radioFingerprintStatusPending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:checked="false"
+                    android:layout_weight="1"
+                    android:textSize="14dp"
+                    android:text="PENDIENTE" />
+
+                <RadioButton
+                    android:id="@+id/radioFingerprintStatusEnrolled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:checked="false"
+                    android:layout_weight="1"
+                    android:textSize="14dp"
+                    android:text="CARGADA" />
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/txtUserDni"
@@ -185,6 +244,34 @@
                     android:text="NO" />
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/txtUserDateCreated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="CREADO"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/edtUserDateCreated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/txtUserLastUpdated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="MODIFICADO"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/edtUserLastUpdated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
@@ -204,6 +291,6 @@
 
         </LinearLayout>
 
-
     </android.support.constraint.ConstraintLayout>
+
 </ScrollView>

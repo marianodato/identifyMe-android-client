@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         btnGetUsersList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get users list
                 getUsersList(userLoginAccessToken, userLoginUsername);
             }
         });

@@ -43,10 +43,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String userLoginUsername = edtUserLoginUsername.getText().toString();
                 String userLoginPassword = edtUserLoginPassword.getText().toString();
-                //validate form
+
                 if (validateLoginFields(userLoginUsername, userLoginPassword)) {
                     UserLogin userLoginRequest = new UserLogin(userLoginUsername, userLoginPassword);
-                    //do login
                     doLogin(userLoginRequest);
                 }
             }
@@ -73,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
                 if (response.isSuccessful()) {
                     UserLogin userLoginResponse = (UserLogin) response.body();
-                    //login start main activity
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("userLoginUsername", userLoginRequest.getUsername());
                     intent.putExtra("userLoginAccessToken", userLoginResponse.getAccessToken());

@@ -51,17 +51,17 @@ public class UserAdapter extends ArrayAdapter<User> {
         txtUserUsername.setText(String.format("USUARIO: %s", users.get(pos).getUsername()));
         txtUserName.setText(String.format("NOMBRE: %s", users.get(pos).getName()));
         if (users.get(pos).getFingerprintId() != null) {
-            txtUserFingerprintId.setText(String.format("ID HUELLA: %d", users.get(pos).getFingerprintId()));
+            txtUserFingerprintId.setText(String.format("ID DE HUELLA: %d", users.get(pos).getFingerprintId()));
         } else {
-            txtUserFingerprintId.setText(String.format("ID HUELLA: -"));
+            txtUserFingerprintId.setText("ID DE HUELLA: -");
         }
 
         if (users.get(pos).getFingerprintStatus().equals("enrolled")) {
-            txtUserFingerprintStatus.setText(String.format("ESTADO DE HUELLA: %s", "Cargada"));
+            txtUserFingerprintStatus.setText("ESTADO DE HUELLA: Cargada");
         } else if (users.get(pos).getFingerprintStatus().equals("pending")) {
-            txtUserFingerprintStatus.setText(String.format("ESTADO DE HUELLA: %s", "Pendiente"));
+            txtUserFingerprintStatus.setText("ESTADO DE HUELLA: Pendiente");
         } else {
-            txtUserFingerprintStatus.setText(String.format("ESTADO DE HUELLA: %s", "No cargada"));
+            txtUserFingerprintStatus.setText("ESTADO DE HUELLA: No cargada");
         }
 
         txtUserDni.setText(String.format("DNI: %d", users.get(pos).getDni()));
@@ -75,11 +75,24 @@ public class UserAdapter extends ArrayAdapter<User> {
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //start Activity User Form
                 Intent intent = new Intent(context, UserActivity.class);
                 intent.putExtra("userLoginAccessToken", userLoginAccessToken);
                 intent.putExtra("userLoginUsername", userLoginUsername);
+
                 intent.putExtra("userId", String.valueOf(users.get(pos).getId()));
+                intent.putExtra("userUsername", String.valueOf(users.get(pos).getUsername()));
+                intent.putExtra("userPassword", String.valueOf(users.get(pos).getPassword()));
+                intent.putExtra("userName", String.valueOf(users.get(pos).getName()));
+                intent.putExtra("userFingerprintId", users.get(pos).getFingerprintId() != null ? String.valueOf(users.get(pos).getFingerprintId()) : "-");
+                intent.putExtra("userFingerprintStatus", String.valueOf(users.get(pos).getFingerprintStatus()));
+                intent.putExtra("userDni", String.valueOf(users.get(pos).getDni()));
+                intent.putExtra("userGender", String.valueOf(users.get(pos).getGender()));
+                intent.putExtra("userEmail", String.valueOf(users.get(pos).getEmail()));
+                intent.putExtra("userPhoneNumber", String.valueOf(users.get(pos).getPhoneNumber()));
+                intent.putExtra("userIsAdmin", users.get(pos).getAdmin());
+                intent.putExtra("userDateCreated", String.valueOf(users.get(pos).getDateCreated()));
+                intent.putExtra("userLastUpdated", String.valueOf(users.get(pos).getLastUpdated()));
+                intent.putExtra("isPutForm", true);
                 context.startActivity(intent);
             }
         });
