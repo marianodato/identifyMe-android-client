@@ -53,6 +53,7 @@ public class UserActivity extends AppCompatActivity {
     RadioGroup radioGrpUserFingerprintStatus;
     RadioButton radioUserGender;
     RadioButton radioUserIsAdmin;
+    RadioButton radioUserFingerprintStatus;
     Button btnSave;
     Button btnDel;
     UserService userService;
@@ -183,12 +184,23 @@ public class UserActivity extends AppCompatActivity {
                 boolean userIsAdmin = radioUserIsAdmin.getText().equals("SÍ");
 
                 if (isPutForm) {
-                    // TODO
-                    User user = new User();
-                    user.setUsername(userUsername);
-                    updateUser(userLoginAccessToken, userLoginUsername, Long.parseLong(userId), user);
+                    selectedId = radioGrpUserFingerprintStatus.getCheckedRadioButtonId();
+                    radioUserFingerprintStatus = (RadioButton) findViewById(selectedId);
+                    String userFingerprintStatus;
+                    if (radioUserFingerprintStatus.getText().equals("CARGADA")) {
+                        userFingerprintStatus = "enrolled";
+                    } else if (radioUserFingerprintStatus.getText().equals("PENDIENTE")) {
+                        userFingerprintStatus = "pending";
+                    } else {
+                        userFingerprintStatus = "unenrolled";
+                    }
+                    if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
+                        userPassword = userPassword.equals("null") ? null : userPassword;
+                        User user = new User(userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin, userFingerprintStatus);
+                        updateUser(userLoginAccessToken, userLoginUsername, Long.parseLong(userId), user);
+                    }
                 } else {
-                    if (validateCreateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber)) {
+                    if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
                         User user = new User(userUsername, userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin);
                         addUser(userLoginAccessToken, userLoginUsername, user);
                     }
@@ -205,15 +217,19 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
-    private boolean validateCreateUserFields(String username, String password, String name, String dni, String email, String phoneNumber) {
+    private boolean validateUserFields(String username, String password, String name, String dni, String email, String phoneNumber, boolean isPutForm) {
         if (username == null || !username.matches("(?=^.{6,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$")) {
             Toast.makeText(this, "Valor incorrecto para el campo usuario! Formato: Sólo un caracter especial (._-) permitido y no debe estar en los extremos. El primer caracter no puede ser numérico. Todos los demás caracteres permitidos son letras y números. La longitud total debe estar entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (password == null || !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@!#%*?&._-])[A-Za-z\\d$@!#%*?&._-]{8,}")) {
-            Toast.makeText(this, "Valor incorrecto para el campo clave! Formato: Mínimo 8 caracteres, al menos 1 en mayúscula, 1 en minúscula, 1 número y 1 caracter especial", Toast.LENGTH_SHORT).show();
-            return false;
+
+        if (!isPutForm || !password.equals("null")) {
+            if (password == null || !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@!#%*?&._-])[A-Za-z\\d$@!#%*?&._-]{8,}")) {
+                Toast.makeText(this, "Valor incorrecto para el campo clave! Formato: Mínimo 8 caracteres, al menos 1 en mayúscula, 1 en minúscula, 1 número y 1 caracter especial", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
+
         if (username.equals(password)) {
             Toast.makeText(this, "El usuario no puede ser igual a la clave!", Toast.LENGTH_SHORT).show();
             return false;

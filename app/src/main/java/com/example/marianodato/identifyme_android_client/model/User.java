@@ -76,6 +76,17 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
+    public User(String password, String name, Long dni, String gender, String email, String phoneNumber, boolean isAdmin, String userFingerprintStatus) {
+        this.password = password;
+        this.name = name;
+        this.dni = dni;
+        this.gender = gender;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.isAdmin = isAdmin;
+        this.fingerprintStatus = userFingerprintStatus;
+    }
+
     public Long getId() {
         return id;
     }
