@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -11,32 +12,15 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:id="@+id/txtUserLoginUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <Button
-            android:id="@+id/btnAddUser"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Crear usuario"
-            android:background="#BA55D3"
-            android:textColor="#ffffff"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <Button
-            android:id="@+id/btnGetUsersList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Listar usuarios"
-            android:background="#32CD32"
-            android:textColor="#ffffff"
-            android:layout_marginBottom="5dp"
-            />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:background="@color/colorPrimary"
+            app:theme="@style/ToolBarStyle"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <ListView
             android:id="@+id/listView"

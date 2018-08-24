@@ -1,8 +1,8 @@
 package com.example.marianodato.identifyme_android_client;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,43 +63,44 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        setTitle("identifyMe-android-client");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("identifyMe-android-client");
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        txtUserId = (TextView) findViewById(R.id.txtUserId);
-        txtUserUsername = (TextView) findViewById(R.id.txtUserUsername);
-        txtUserPassword = (TextView) findViewById(R.id.txtUserPassword);
-        txtUserName = (TextView) findViewById(R.id.txtUserName);
-        txtUserFingerprintId = (TextView) findViewById(R.id.txtUserFingerprintId);
-        txtUserFingerprintStatus = (TextView) findViewById(R.id.txtUserFingerprintStatus);
-        txtUserDni = (TextView) findViewById(R.id.txtUserDni);
-        txtUserGender = (TextView) findViewById(R.id.txtUserGender);
-        txtUserEmail = (TextView) findViewById(R.id.txtUserEmail);
-        txtUserPhoneNumber = (TextView) findViewById(R.id.txtUserPhoneNumber);
-        txtUserIsAdmin = (TextView) findViewById(R.id.txtUserIsAdmin);
-        txtUserDateCreated = (TextView) findViewById(R.id.txtUserDateCreated);
-        txtUserLastUpdated = (TextView) findViewById(R.id.txtUserLastUpdated);
-        edtUserId = (EditText) findViewById(R.id.edtUserId);
-        edtUserUsername = (EditText) findViewById(R.id.edtUserUsername);
-        edtUserPassword = (EditText) findViewById(R.id.edtUserPassword);
-        edtUserName = (EditText) findViewById(R.id.edtUserName);
-        edtUserFingerprintId = (EditText) findViewById(R.id.edtUserFingerprintId);
-        edtUserEmail = (EditText) findViewById(R.id.edtUserEmail);
-        edtUserPhoneNumber = (EditText) findViewById(R.id.edtUserPhoneNumber);
-        edtUserDni = (EditText) findViewById(R.id.edtUserDni);
-        edtUserDateCreated = (EditText) findViewById(R.id.edtUserDateCreated);
-        edtUserLastUpdated = (EditText) findViewById(R.id.edtUserLastUpdated);
-        radioGrpUserGender = (RadioGroup) findViewById(R.id.radioGrpUserGender);
-        radioGrpUserIsAdmin = (RadioGroup) findViewById(R.id.radioGrpUserIsAdmin);
-        radioGrpUserFingerprintStatus = (RadioGroup) findViewById(R.id.radioGrpUserFingerprintStatus);
-        btnSave = (Button) findViewById(R.id.btnSave);
-        btnDel = (Button) findViewById(R.id.btnDel);
+        txtUserId = findViewById(R.id.txtUserId);
+        txtUserUsername = findViewById(R.id.txtUserUsername);
+        txtUserPassword = findViewById(R.id.txtUserPassword);
+        txtUserName = findViewById(R.id.txtUserName);
+        txtUserFingerprintId = findViewById(R.id.txtUserFingerprintId);
+        txtUserFingerprintStatus = findViewById(R.id.txtUserFingerprintStatus);
+        txtUserDni = findViewById(R.id.txtUserDni);
+        txtUserGender = findViewById(R.id.txtUserGender);
+        txtUserEmail = findViewById(R.id.txtUserEmail);
+        txtUserPhoneNumber = findViewById(R.id.txtUserPhoneNumber);
+        txtUserIsAdmin = findViewById(R.id.txtUserIsAdmin);
+        txtUserDateCreated = findViewById(R.id.txtUserDateCreated);
+        txtUserLastUpdated = findViewById(R.id.txtUserLastUpdated);
+        edtUserId = findViewById(R.id.edtUserId);
+        edtUserUsername = findViewById(R.id.edtUserUsername);
+        edtUserPassword = findViewById(R.id.edtUserPassword);
+        edtUserName = findViewById(R.id.edtUserName);
+        edtUserFingerprintId = findViewById(R.id.edtUserFingerprintId);
+        edtUserEmail = findViewById(R.id.edtUserEmail);
+        edtUserPhoneNumber = findViewById(R.id.edtUserPhoneNumber);
+        edtUserDni = findViewById(R.id.edtUserDni);
+        edtUserDateCreated = findViewById(R.id.edtUserDateCreated);
+        edtUserLastUpdated = findViewById(R.id.edtUserLastUpdated);
+        radioGrpUserGender = findViewById(R.id.radioGrpUserGender);
+        radioGrpUserIsAdmin = findViewById(R.id.radioGrpUserIsAdmin);
+        radioGrpUserFingerprintStatus = findViewById(R.id.radioGrpUserFingerprintStatus);
+        btnSave = findViewById(R.id.btnSave);
+        btnDel = findViewById(R.id.btnDel);
 
         userService = APIUtils.getUserService();
 
         Bundle extras = getIntent().getExtras();
         final String userLoginAccessToken = extras.getString("userLoginAccessToken");
-        final String userLoginUsername = extras.getString("userLoginUsername");
         final String userId = extras.getString("userId");
         final String userUsername = extras.getString("userUsername");
         final String userPassword = extras.getString("userPassword");
@@ -177,15 +178,15 @@ public class UserActivity extends AppCompatActivity {
                 String userEmail = edtUserEmail.getText().toString();
                 String userPhoneNumber = edtUserPhoneNumber.getText().toString();
                 int selectedId = radioGrpUserGender.getCheckedRadioButtonId();
-                radioUserGender = (RadioButton) findViewById(selectedId);
+                radioUserGender = findViewById(selectedId);
                 String userGender = radioUserGender.getText().equals("HOMBRE") ? "male" : "female";
                 selectedId = radioGrpUserIsAdmin.getCheckedRadioButtonId();
-                radioUserIsAdmin = (RadioButton) findViewById(selectedId);
+                radioUserIsAdmin = findViewById(selectedId);
                 boolean userIsAdmin = radioUserIsAdmin.getText().equals("SÍ");
 
                 if (isPutForm) {
                     selectedId = radioGrpUserFingerprintStatus.getCheckedRadioButtonId();
-                    radioUserFingerprintStatus = (RadioButton) findViewById(selectedId);
+                    radioUserFingerprintStatus = findViewById(selectedId);
                     String userFingerprintStatus;
                     if (radioUserFingerprintStatus.getText().equals("CARGADA")) {
                         userFingerprintStatus = "enrolled";
@@ -197,12 +198,12 @@ public class UserActivity extends AppCompatActivity {
                     if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
                         userPassword = userPassword.equals("null") ? null : userPassword;
                         User user = new User(userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin, userFingerprintStatus);
-                        updateUser(userLoginAccessToken, userLoginUsername, Long.parseLong(userId), user);
+                        updateUser(userLoginAccessToken, Long.parseLong(userId), user);
                     }
                 } else {
                     if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
                         User user = new User(userUsername, userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin);
-                        addUser(userLoginAccessToken, userLoginUsername, user);
+                        addUser(userLoginAccessToken, user);
                     }
                 }
             }
@@ -211,10 +212,20 @@ public class UserActivity extends AppCompatActivity {
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteUser(userLoginAccessToken, userLoginUsername, Long.parseLong(userId));
+                deleteUser(userLoginAccessToken, Long.parseLong(userId));
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean validateUserFields(String username, String password, String name, String dni, String email, String phoneNumber, boolean isPutForm) {
@@ -254,17 +265,14 @@ public class UserActivity extends AppCompatActivity {
         return true;
     }
 
-    public void addUser(final String userLoginAccessToken, final String userLoginUsername, User user) {
+    private void addUser(final String userLoginAccessToken, User user) {
         Call<User> call = userService.addUser(userLoginAccessToken, user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(UserActivity.this, "Usuario creado exitosamente!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(UserActivity.this, MainActivity.class);
-                    intent.putExtra("userLoginAccessToken", userLoginAccessToken);
-                    intent.putExtra("userLoginUsername", userLoginUsername);
-                    startActivity(intent);
+                    onBackPressed();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -285,17 +293,14 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
-    public void updateUser(final String userLoginAccessToken, final String userLoginUsername, long userId, User user) {
+    private void updateUser(final String userLoginAccessToken, long userId, User user) {
         Call<User> call = userService.updateUser(userId, userLoginAccessToken, user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(UserActivity.this, "Usuario modificado exitosamente!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(UserActivity.this, MainActivity.class);
-                    intent.putExtra("userLoginAccessToken", userLoginAccessToken);
-                    intent.putExtra("userLoginUsername", userLoginUsername);
-                    startActivity(intent);
+                    onBackPressed();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -316,17 +321,14 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
-    public void deleteUser(final String userLoginAccessToken, final String userLoginUsername, long userId) {
+    private void deleteUser(final String userLoginAccessToken, long userId) {
         Call<User> call = userService.deleteUser(userId, userLoginAccessToken);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(UserActivity.this, "Usuario eliminado exitosamente!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(UserActivity.this, MainActivity.class);
-                    intent.putExtra("userLoginAccessToken", userLoginAccessToken);
-                    intent.putExtra("userLoginUsername", userLoginUsername);
-                    startActivity(intent);
+                    onBackPressed();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -345,15 +347,5 @@ public class UserActivity extends AppCompatActivity {
                 Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

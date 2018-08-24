@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuAddUser"
+        android:icon="@drawable/ic_action_add"
+        android:orderInCategory="100"
+        android:title="Crear usuario"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuAbout"
+        android:title="Acerca de" />
+
+    <item
+        android:id="@+id/menuLogout"
+        android:title="Salir" />
+
+</menu>

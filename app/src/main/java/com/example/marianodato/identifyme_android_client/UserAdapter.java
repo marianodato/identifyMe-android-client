@@ -19,14 +19,12 @@ public class UserAdapter extends ArrayAdapter<User> {
     private Context context;
     private List<User> users;
     private String userLoginAccessToken;
-    private String userLoginUsername;
 
-    public UserAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<User> objects, @NonNull String userLoginAccessToken, String userLoginUsername) {
+    public UserAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<User> objects, @NonNull String userLoginAccessToken) {
         super(context, resource, objects);
         this.context = context;
         this.users = objects;
         this.userLoginAccessToken = userLoginAccessToken;
-        this.userLoginUsername = userLoginUsername;
     }
 
     @Override
@@ -34,18 +32,18 @@ public class UserAdapter extends ArrayAdapter<User> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_user, parent, false);
 
-        TextView txtUserId = (TextView) rowView.findViewById(R.id.txtUserId);
-        TextView txtUserUsername = (TextView) rowView.findViewById(R.id.txtUserUsername);
-        TextView txtUserName = (TextView) rowView.findViewById(R.id.txtUserName);
-        TextView txtUserFingerprintId = (TextView) rowView.findViewById(R.id.txtUserFingerprintId);
-        TextView txtUserFingerprintStatus = (TextView) rowView.findViewById(R.id.txtUserFingerprintStatus);
-        TextView txtUserDni = (TextView) rowView.findViewById(R.id.txtUserDni);
-        TextView txtUserGender = (TextView) rowView.findViewById(R.id.txtUserGender);
-        TextView txtUserEmail = (TextView) rowView.findViewById(R.id.txtUserEmail);
-        TextView txtUserPhoneNumber = (TextView) rowView.findViewById(R.id.txtUserPhoneNumber);
-        TextView txtUserIsAdmin = (TextView) rowView.findViewById(R.id.txtUserIsAdmin);
-        TextView txtUserDateCreated = (TextView) rowView.findViewById(R.id.txtUserDateCreated);
-        TextView txtUserLastUpdated = (TextView) rowView.findViewById(R.id.txtUserLastUpdated);
+        TextView txtUserId = rowView.findViewById(R.id.txtUserId);
+        TextView txtUserUsername = rowView.findViewById(R.id.txtUserUsername);
+        TextView txtUserName = rowView.findViewById(R.id.txtUserName);
+        TextView txtUserFingerprintId = rowView.findViewById(R.id.txtUserFingerprintId);
+        TextView txtUserFingerprintStatus = rowView.findViewById(R.id.txtUserFingerprintStatus);
+        TextView txtUserDni = rowView.findViewById(R.id.txtUserDni);
+        TextView txtUserGender = rowView.findViewById(R.id.txtUserGender);
+        TextView txtUserEmail = rowView.findViewById(R.id.txtUserEmail);
+        TextView txtUserPhoneNumber = rowView.findViewById(R.id.txtUserPhoneNumber);
+        TextView txtUserIsAdmin = rowView.findViewById(R.id.txtUserIsAdmin);
+        TextView txtUserDateCreated = rowView.findViewById(R.id.txtUserDateCreated);
+        TextView txtUserLastUpdated = rowView.findViewById(R.id.txtUserLastUpdated);
 
         txtUserId.setText(String.format("ID: %d", users.get(pos).getId()));
         txtUserUsername.setText(String.format("USUARIO: %s", users.get(pos).getUsername()));
@@ -77,7 +75,6 @@ public class UserAdapter extends ArrayAdapter<User> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserActivity.class);
                 intent.putExtra("userLoginAccessToken", userLoginAccessToken);
-                intent.putExtra("userLoginUsername", userLoginUsername);
 
                 intent.putExtra("userId", String.valueOf(users.get(pos).getId()));
                 intent.putExtra("userUsername", String.valueOf(users.get(pos).getUsername()));

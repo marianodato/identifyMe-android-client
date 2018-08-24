@@ -60,11 +60,6 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public User(String username, String password, String name, Long dni, String gender, String email, String phoneNumber, boolean isAdmin) {
         this.username = username;
         this.password = password;

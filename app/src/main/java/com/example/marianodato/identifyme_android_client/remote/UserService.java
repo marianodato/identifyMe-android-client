@@ -16,17 +16,20 @@ import retrofit2.http.Query;
 public interface UserService {
 
     @POST("sessions/")
-    Call<UserLogin> login(@Body UserLogin userLogin);
+    Call<UserLogin> doLogin(@Body UserLogin userLogin);
 
-    @POST("users/")
-    Call<User> addUser(@Query("accessToken") String accessToken, @Body User user);
+    @DELETE("sessions/")
+    Call<UserLogin> doLogout(@Query("accessToken") String accessToken);
 
     @GET("users/")
     Call<UserResults> getUsers(@Query("accessToken") String accessToken, @Query("offset") int offset, @Query("limit") int limit);
 
-    @DELETE("users/{id}")
-    Call<User> deleteUser(@Path("id") long id, @Query("accessToken") String accessToken);
+    @POST("users/")
+    Call<User> addUser(@Query("accessToken") String accessToken, @Body User user);
 
     @PUT("users/{id}")
     Call<User> updateUser(@Path("id") long id, @Query("accessToken") String accessToken, @Body User user);
+
+    @DELETE("users/{id}")
+    Call<User> deleteUser(@Path("id") long id, @Query("accessToken") String accessToken);
 }

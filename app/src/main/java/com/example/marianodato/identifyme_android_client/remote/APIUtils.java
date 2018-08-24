@@ -5,7 +5,7 @@ public class APIUtils {
     private APIUtils(){
     }
 
-    public static final String API_URL = "https://identifyme-backend-api.herokuapp.com/";
+    private static final String API_URL = "https://identifyme-backend-api.herokuapp.com/";
 
     public static UserService getUserService(){
         return RetrofitClient.getClient(API_URL).create(UserService.class);

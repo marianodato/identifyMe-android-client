@@ -3,6 +3,7 @@ package com.example.marianodato.identifyme_android_client;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,11 +32,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        setTitle("identifyMe-android-client");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("identifyMe-android-client");
+        setSupportActionBar(toolbar);
 
-        edtUserLoginUsername = (EditText) findViewById(R.id.edtUserLoginUsername);
-        edtUserLoginPassword = (EditText) findViewById(R.id.edtUserLoginPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        edtUserLoginUsername = findViewById(R.id.edtUserLoginUsername);
+        edtUserLoginPassword = findViewById(R.id.edtUserLoginPassword);
+        btnLogin = findViewById(R.id.btnLogin);
         userService = APIUtils.getUserService();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -66,14 +69,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void doLogin(final UserLogin userLoginRequest) {
-        Call<UserLogin> call = userService.login(userLoginRequest);
+        Call<UserLogin> call = userService.doLogin(userLoginRequest);
         call.enqueue(new Callback<UserLogin>() {
             @Override
             public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
                 if (response.isSuccessful()) {
-                    UserLogin userLoginResponse = (UserLogin) response.body();
+                    UserLogin userLoginResponse = response.body();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("userLoginUsername", userLoginRequest.getUsername());
                     intent.putExtra("userLoginAccessToken", userLoginResponse.getAccessToken());
                     startActivity(intent);
                 } else {
