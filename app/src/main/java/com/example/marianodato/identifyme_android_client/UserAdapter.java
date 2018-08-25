@@ -45,30 +45,30 @@ public class UserAdapter extends ArrayAdapter<User> {
         TextView txtUserDateCreated = rowView.findViewById(R.id.txtUserDateCreated);
         TextView txtUserLastUpdated = rowView.findViewById(R.id.txtUserLastUpdated);
 
-        txtUserId.setText(String.format("ID: %d", users.get(pos).getId()));
-        txtUserUsername.setText(String.format("USUARIO: %s", users.get(pos).getUsername()));
-        txtUserName.setText(String.format("NOMBRE: %s", users.get(pos).getName()));
+        txtUserId.setText(String.format("Id: %d", users.get(pos).getId()));
+        txtUserUsername.setText(String.format("Usuario: %s", users.get(pos).getUsername()));
+        txtUserName.setText(String.format("Nombre: %s", users.get(pos).getName()));
         if (users.get(pos).getFingerprintId() != null) {
-            txtUserFingerprintId.setText(String.format("ID DE HUELLA: %d", users.get(pos).getFingerprintId()));
+            txtUserFingerprintId.setText(String.format("Id de huella: %d", users.get(pos).getFingerprintId()));
         } else {
-            txtUserFingerprintId.setText("ID DE HUELLA: -");
+            txtUserFingerprintId.setText("Id de huella: -");
         }
 
         if (users.get(pos).getFingerprintStatus().equals("enrolled")) {
-            txtUserFingerprintStatus.setText("ESTADO DE HUELLA: Cargada");
+            txtUserFingerprintStatus.setText("Estado de huella: Cargada");
         } else if (users.get(pos).getFingerprintStatus().equals("pending")) {
-            txtUserFingerprintStatus.setText("ESTADO DE HUELLA: Pendiente");
+            txtUserFingerprintStatus.setText("Estado de huella: Pendiente");
         } else {
-            txtUserFingerprintStatus.setText("ESTADO DE HUELLA: No cargada");
+            txtUserFingerprintStatus.setText("Estado de huella: No cargada");
         }
 
-        txtUserDni.setText(String.format("DNI: %d", users.get(pos).getDni()));
-        txtUserGender.setText(String.format("GÉNERO: %s", users.get(pos).getGender().equals("male") ? "Hombre" : "Mujer"));
-        txtUserEmail.setText(String.format("EMAIL: %s", users.get(pos).getEmail()));
-        txtUserPhoneNumber.setText(String.format("TELÉFONO: %s", users.get(pos).getPhoneNumber()));
-        txtUserIsAdmin.setText(String.format("ADMIN: %s", users.get(pos).getAdmin() ? "Sí" : "No"));
-        txtUserDateCreated.setText(String.format("CREADO: %s", users.get(pos).getDateCreated()));
-        txtUserLastUpdated.setText(String.format("MODIFICADO: %s", users.get(pos).getLastUpdated()));
+        txtUserDni.setText(String.format("Dni: %d", users.get(pos).getDni()));
+        txtUserGender.setText(String.format("Género: %s", users.get(pos).getGender().equals("male") ? "Hombre" : "Mujer"));
+        txtUserEmail.setText(String.format("Email: %s", users.get(pos).getEmail()));
+        txtUserPhoneNumber.setText(String.format("Teléfono: %s", users.get(pos).getPhoneNumber()));
+        txtUserIsAdmin.setText(String.format("Admin: %s", users.get(pos).getAdmin() ? "Sí" : "No"));
+        txtUserDateCreated.setText(String.format("Creado: %s", users.get(pos).getDateCreated()));
+        txtUserLastUpdated.setText(String.format("Modificado: %s", users.get(pos).getLastUpdated()));
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override

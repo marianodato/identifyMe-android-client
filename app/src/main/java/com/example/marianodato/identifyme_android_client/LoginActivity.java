@@ -1,6 +1,7 @@
 package com.example.marianodato.identifyme_android_client;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("identifyMe-android-client");
+        toolbar.setTitle("Iniciar sesión");
         setSupportActionBar(toolbar);
 
         edtUserLoginUsername = findViewById(R.id.edtUserLoginUsername);
@@ -44,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnLogin.setBackgroundColor(Color.GRAY);
+                btnLogin.setEnabled(false);
                 String userLoginUsername = edtUserLoginUsername.getText().toString();
                 String userLoginPassword = edtUserLoginPassword.getText().toString();
 
@@ -54,6 +57,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        btnLogin.setBackgroundColor(0xFF3F51B5);
+        btnLogin.setEnabled(true);
     }
 
     private boolean validateLoginFields(String username, String password) {
@@ -87,6 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
                     }
+                    btnLogin.setBackgroundColor(0xFF3F51B5);
+                    btnLogin.setEnabled(true);
                 }
             }
 
@@ -94,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<UserLogin> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                btnLogin.setBackgroundColor(0xFF3F51B5);
+                btnLogin.setEnabled(true);
             }
         });
     }

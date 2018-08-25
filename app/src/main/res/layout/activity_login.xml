@@ -22,15 +22,11 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Iniciar sesión"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Usuario: " />
+            android:layout_marginTop="5dp"
+            android:text="Usuario:"
+            android:textSize="20dp" />
 
         <EditText
             android:id="@+id/edtUserLoginUsername"
@@ -39,9 +35,11 @@
             android:inputType="text" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Clave: " />
+            android:layout_marginTop="5dp"
+            android:text="Clave:"
+            android:textSize="20dp" />
 
         <EditText
             android:id="@+id/edtUserLoginPassword"
@@ -51,10 +49,13 @@
 
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrar" />
+            android:background="@color/colorPrimary"
+            android:text="ENTRAR"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
+

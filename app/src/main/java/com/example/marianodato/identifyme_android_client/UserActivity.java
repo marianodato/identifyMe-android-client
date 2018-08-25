@@ -1,5 +1,6 @@
 package com.example.marianodato.identifyme_android_client;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,8 +64,16 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        Bundle extras = getIntent().getExtras();
+        final boolean isPutForm = extras.getBoolean("isPutForm");
+
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("identifyMe-android-client");
+        if (isPutForm) {
+            toolbar.setTitle("Modificar usuario");
+        } else {
+            toolbar.setTitle("Nuevo usuario");
+        }
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -99,7 +108,7 @@ public class UserActivity extends AppCompatActivity {
 
         userService = APIUtils.getUserService();
 
-        Bundle extras = getIntent().getExtras();
+
         final String userLoginAccessToken = extras.getString("userLoginAccessToken");
         final String userId = extras.getString("userId");
         final String userUsername = extras.getString("userUsername");
@@ -114,8 +123,6 @@ public class UserActivity extends AppCompatActivity {
         final boolean userIsAdmin = extras.getBoolean("userIsAdmin");
         final String userDateCreated = extras.getString("userDateCreated");
         final String userLastUpdated = extras.getString("userLastUpdated");
-
-        final boolean isPutForm = extras.getBoolean("isPutForm");
 
         if (isPutForm) {
             edtUserId.setText(userId);
@@ -171,6 +178,8 @@ public class UserActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnSave.setBackgroundColor(Color.GRAY);
+                btnSave.setEnabled(false);
                 String userUsername = edtUserUsername.getText().toString();
                 String userPassword = edtUserPassword.getText().toString();
                 String userName = edtUserName.getText().toString();
@@ -179,18 +188,18 @@ public class UserActivity extends AppCompatActivity {
                 String userPhoneNumber = edtUserPhoneNumber.getText().toString();
                 int selectedId = radioGrpUserGender.getCheckedRadioButtonId();
                 radioUserGender = findViewById(selectedId);
-                String userGender = radioUserGender.getText().equals("HOMBRE") ? "male" : "female";
+                String userGender = radioUserGender.getText().equals("Hombre") ? "male" : "female";
                 selectedId = radioGrpUserIsAdmin.getCheckedRadioButtonId();
                 radioUserIsAdmin = findViewById(selectedId);
-                boolean userIsAdmin = radioUserIsAdmin.getText().equals("SÍ");
+                boolean userIsAdmin = radioUserIsAdmin.getText().equals("Sí");
 
                 if (isPutForm) {
                     selectedId = radioGrpUserFingerprintStatus.getCheckedRadioButtonId();
                     radioUserFingerprintStatus = findViewById(selectedId);
                     String userFingerprintStatus;
-                    if (radioUserFingerprintStatus.getText().equals("CARGADA")) {
+                    if (radioUserFingerprintStatus.getText().equals("Cargada")) {
                         userFingerprintStatus = "enrolled";
-                    } else if (radioUserFingerprintStatus.getText().equals("PENDIENTE")) {
+                    } else if (radioUserFingerprintStatus.getText().equals("Pendiente")) {
                         userFingerprintStatus = "pending";
                     } else {
                         userFingerprintStatus = "unenrolled";
@@ -212,6 +221,8 @@ public class UserActivity extends AppCompatActivity {
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnDel.setBackgroundColor(Color.GRAY);
+                btnDel.setEnabled(false);
                 deleteUser(userLoginAccessToken, Long.parseLong(userId));
             }
         });
@@ -282,6 +293,8 @@ public class UserActivity extends AppCompatActivity {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
                     }
+                    btnSave.setBackgroundColor(0xFF32CD32);
+                    btnSave.setEnabled(true);
                 }
             }
 
@@ -289,6 +302,8 @@ public class UserActivity extends AppCompatActivity {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                btnSave.setBackgroundColor(0xFF32CD32);
+                btnSave.setEnabled(true);
             }
         });
     }
@@ -310,6 +325,10 @@ public class UserActivity extends AppCompatActivity {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
                     }
+                    btnSave.setBackgroundColor(0xFF32CD32);
+                    btnSave.setEnabled(true);
+                    btnDel.setBackgroundColor(0xFFFF0000);
+                    btnDel.setEnabled(true);
                 }
             }
 
@@ -317,6 +336,10 @@ public class UserActivity extends AppCompatActivity {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                btnSave.setBackgroundColor(0xFF32CD32);
+                btnSave.setEnabled(true);
+                btnDel.setBackgroundColor(0xFFFF0000);
+                btnDel.setEnabled(true);
             }
         });
     }
@@ -338,6 +361,8 @@ public class UserActivity extends AppCompatActivity {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
                     }
+                    btnDel.setBackgroundColor(0xFFFF0000);
+                    btnDel.setEnabled(true);
                 }
             }
 
@@ -345,6 +370,8 @@ public class UserActivity extends AppCompatActivity {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                btnDel.setBackgroundColor(0xFFFF0000);
+                btnDel.setEnabled(true);
             }
         });
     }

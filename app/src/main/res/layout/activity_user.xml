@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="ID"
+                android:text="Id:"
                 android:textSize="20dp" />
 
             <EditText
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="USUARIO"
+                android:text="Usuario:"
                 android:textSize="20dp" />
 
             <EditText
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="CLAVE"
+                android:text="Clave:"
                 android:textSize="20dp" />
 
             <EditText
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="NOMBRE"
+                android:text="Nombre:"
                 android:textSize="20dp" />
 
             <EditText
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="ID DE HUELLA"
+                android:text="Id de huella:"
                 android:textSize="20dp" />
 
             <EditText
@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="ESTADO DE HUELLA"
+                android:text="Estado de huella:"
                 android:textSize="20dp" />
 
             <RadioGroup
@@ -118,7 +118,7 @@
                     android:checked="true"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="NO CARGADA" />
+                    android:text="No cargada" />
 
                 <RadioButton
                     android:id="@+id/radioFingerprintStatusPending"
@@ -128,7 +128,7 @@
                     android:checked="false"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="PENDIENTE" />
+                    android:text="Pendiente" />
 
                 <RadioButton
                     android:id="@+id/radioFingerprintStatusEnrolled"
@@ -138,7 +138,7 @@
                     android:checked="false"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="CARGADA" />
+                    android:text="Cargada" />
             </RadioGroup>
 
             <TextView
@@ -146,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="DNI"
+                android:text="Dni:"
                 android:textSize="20dp" />
 
             <EditText
@@ -160,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="GÉNERO"
+                android:text="Género:"
                 android:textSize="20dp" />
 
             <RadioGroup
@@ -178,7 +178,7 @@
                     android:checked="true"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="HOMBRE" />
+                    android:text="Hombre" />
 
                 <RadioButton
                     android:id="@+id/radioGenderFemale"
@@ -188,7 +188,7 @@
                     android:checked="false"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="MUJER" />
+                    android:text="Mujer" />
             </RadioGroup>
 
             <TextView
@@ -196,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="EMAIL"
+                android:text="Email:"
                 android:textSize="20dp" />
 
             <EditText
@@ -210,7 +210,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="TELÉFONO"
+                android:text="Teléfono:"
                 android:textSize="20dp" />
 
             <EditText
@@ -224,7 +224,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="ADMIN"
+                android:text="Admin:"
                 android:textSize="20dp" />
 
             <RadioGroup
@@ -242,7 +242,7 @@
                     android:checked="true"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="SÍ" />
+                    android:text="Sí" />
 
                 <RadioButton
                     android:id="@+id/radioIsNotAdmin"
@@ -252,7 +252,7 @@
                     android:checked="false"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="NO" />
+                    android:text="No" />
             </RadioGroup>
 
             <TextView
@@ -260,7 +260,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="CREADO"
+                android:text="Creado:"
                 android:textSize="20dp" />
 
             <EditText
@@ -274,7 +274,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="MODIFICADO"
+                android:text="Modificado:"
                 android:textSize="20dp" />
 
             <EditText
