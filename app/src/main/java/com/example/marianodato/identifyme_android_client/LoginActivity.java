@@ -1,6 +1,7 @@
 package com.example.marianodato.identifyme_android_client;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,17 +22,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
 
-    EditText edtUserLoginUsername;
-    EditText edtUserLoginPassword;
-    Button btnLogin;
-    UserService userService;
+    private EditText edtUserLoginUsername;
+    private EditText edtUserLoginPassword;
+    private Button btnLogin;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences prefs = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        if (prefs.getString(ACCESS_TOKEN_KEY, null) != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Iniciar sesión");
@@ -68,11 +76,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateLoginFields(String username, String password) {
         if (username == null || username.trim().length() == 0) {
-            Toast.makeText(this, "El campo usuario es obligatorio!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "El campo usuario es obligatorio!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (password == null || password.trim().length() == 0) {
-            Toast.makeText(this, "El campo clave es obligatorio!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "El campo clave es obligatorio!", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -85,17 +93,22 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
                 if (response.isSuccessful()) {
                     UserLogin userLoginResponse = response.body();
+
+                    SharedPreferences.Editor editor = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE).edit();
+                    editor.putString(ACCESS_TOKEN_KEY, userLoginResponse.getAccessToken());
+                    editor.apply();
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("userLoginAccessToken", userLoginResponse.getAccessToken());
                     startActivity(intent);
+                    finish();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(LoginActivity.this, jObjError.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
                     btnLogin.setBackgroundColor(0xFF3F51B5);
                     btnLogin.setEnabled(true);
@@ -105,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserLogin> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                 btnLogin.setBackgroundColor(0xFF3F51B5);
                 btnLogin.setEnabled(true);
             }

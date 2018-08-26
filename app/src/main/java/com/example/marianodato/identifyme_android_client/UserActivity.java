@@ -1,5 +1,6 @@
 package com.example.marianodato.identifyme_android_client;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,45 +25,40 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity implements PreferenceKeys {
 
-    TextView txtUserId;
-    TextView txtUserUsername;
-    TextView txtUserPassword;
-    TextView txtUserName;
-    TextView txtUserFingerprintId;
-    TextView txtUserFingerprintStatus;
-    TextView txtUserDni;
-    TextView txtUserGender;
-    TextView txtUserEmail;
-    TextView txtUserPhoneNumber;
-    TextView txtUserIsAdmin;
-    TextView txtUserDateCreated;
-    TextView txtUserLastUpdated;
-    EditText edtUserId;
-    EditText edtUserUsername;
-    EditText edtUserPassword;
-    EditText edtUserName;
-    EditText edtUserFingerprintId;
-    EditText edtUserDni;
-    EditText edtUserEmail;
-    EditText edtUserPhoneNumber;
-    EditText edtUserDateCreated;
-    EditText edtUserLastUpdated;
-    RadioGroup radioGrpUserGender;
-    RadioGroup radioGrpUserIsAdmin;
-    RadioGroup radioGrpUserFingerprintStatus;
-    RadioButton radioUserGender;
-    RadioButton radioUserIsAdmin;
-    RadioButton radioUserFingerprintStatus;
-    Button btnSave;
-    Button btnDel;
-    UserService userService;
+    private TextView txtUserId;
+    private TextView txtUserFingerprintId;
+    private TextView txtUserFingerprintStatus;
+    private TextView txtUserDateCreated;
+    private TextView txtUserLastUpdated;
+    private EditText edtUserId;
+    private EditText edtUserUsername;
+    private EditText edtUserPassword;
+    private EditText edtUserName;
+    private EditText edtUserFingerprintId;
+    private EditText edtUserDni;
+    private EditText edtUserEmail;
+    private EditText edtUserPhoneNumber;
+    private EditText edtUserDateCreated;
+    private EditText edtUserLastUpdated;
+    private RadioGroup radioGrpUserGender;
+    private RadioGroup radioGrpUserIsAdmin;
+    private RadioGroup radioGrpUserFingerprintStatus;
+    private RadioButton radioUserGender;
+    private RadioButton radioUserIsAdmin;
+    private RadioButton radioUserFingerprintStatus;
+    private Button btnSave;
+    private Button btnDel;
+    private SharedPreferences prefs;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        prefs = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
 
         Bundle extras = getIntent().getExtras();
         final boolean isPutForm = extras.getBoolean("isPutForm");
@@ -78,16 +74,8 @@ public class UserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         txtUserId = findViewById(R.id.txtUserId);
-        txtUserUsername = findViewById(R.id.txtUserUsername);
-        txtUserPassword = findViewById(R.id.txtUserPassword);
-        txtUserName = findViewById(R.id.txtUserName);
         txtUserFingerprintId = findViewById(R.id.txtUserFingerprintId);
         txtUserFingerprintStatus = findViewById(R.id.txtUserFingerprintStatus);
-        txtUserDni = findViewById(R.id.txtUserDni);
-        txtUserGender = findViewById(R.id.txtUserGender);
-        txtUserEmail = findViewById(R.id.txtUserEmail);
-        txtUserPhoneNumber = findViewById(R.id.txtUserPhoneNumber);
-        txtUserIsAdmin = findViewById(R.id.txtUserIsAdmin);
         txtUserDateCreated = findViewById(R.id.txtUserDateCreated);
         txtUserLastUpdated = findViewById(R.id.txtUserLastUpdated);
         edtUserId = findViewById(R.id.edtUserId);
@@ -108,8 +96,6 @@ public class UserActivity extends AppCompatActivity {
 
         userService = APIUtils.getUserService();
 
-
-        final String userLoginAccessToken = extras.getString("userLoginAccessToken");
         final String userId = extras.getString("userId");
         final String userUsername = extras.getString("userUsername");
         final String userPassword = extras.getString("userPassword");
@@ -207,14 +193,17 @@ public class UserActivity extends AppCompatActivity {
                     if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
                         userPassword = userPassword.equals("null") ? null : userPassword;
                         User user = new User(userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin, userFingerprintStatus);
-                        updateUser(userLoginAccessToken, Long.parseLong(userId), user);
+                        updateUser(Long.parseLong(userId), user);
                     }
                 } else {
                     if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
                         User user = new User(userUsername, userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin);
-                        addUser(userLoginAccessToken, user);
+                        addUser(user);
                     }
                 }
+
+                btnSave.setBackgroundColor(0xFF32CD32);
+                btnSave.setEnabled(true);
             }
         });
 
@@ -223,7 +212,7 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 btnDel.setBackgroundColor(Color.GRAY);
                 btnDel.setEnabled(false);
-                deleteUser(userLoginAccessToken, Long.parseLong(userId));
+                deleteUser(Long.parseLong(userId));
             }
         });
 
@@ -241,57 +230,57 @@ public class UserActivity extends AppCompatActivity {
 
     private boolean validateUserFields(String username, String password, String name, String dni, String email, String phoneNumber, boolean isPutForm) {
         if (username == null || !username.matches("(?=^.{6,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$")) {
-            Toast.makeText(this, "Valor incorrecto para el campo usuario! Formato: Sólo un caracter especial (._-) permitido y no debe estar en los extremos. El primer caracter no puede ser numérico. Todos los demás caracteres permitidos son letras y números. La longitud total debe estar entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Valor incorrecto para el campo usuario! Formato: Sólo un caracter especial (._-) permitido y no debe estar en los extremos. El primer caracter no puede ser numérico. Todos los demás caracteres permitidos son letras y números. La longitud total debe estar entre 6 y 20 caracteres", Toast.LENGTH_LONG).show();
             return false;
         }
 
         if (!isPutForm || !password.equals("null")) {
             if (password == null || !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@!#%*?&._-])[A-Za-z\\d$@!#%*?&._-]{8,}")) {
-                Toast.makeText(this, "Valor incorrecto para el campo clave! Formato: Mínimo 8 caracteres, al menos 1 en mayúscula, 1 en minúscula, 1 número y 1 caracter especial", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Valor incorrecto para el campo clave! Formato: Mínimo 8 caracteres, al menos 1 en mayúscula, 1 en minúscula, 1 número y 1 caracter especial", Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
         if (username.equals(password)) {
-            Toast.makeText(this, "El usuario no puede ser igual a la clave!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "El usuario no puede ser igual a la clave!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (name == null || name.trim().length() == 0) {
-            Toast.makeText(this, "El campo nombre es obligatorio!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "El campo nombre es obligatorio!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (dni == null || dni.trim().length() == 0) {
-            Toast.makeText(this, "El campo dni es obligatorio!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "El campo dni es obligatorio!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (email == null || email.trim().length() == 0 || !email.contains("@")) {
-            Toast.makeText(this, "Valor incorrecto para el campo email! Debes ingresar un mail válido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Valor incorrecto para el campo email! Debes ingresar un mail válido", Toast.LENGTH_LONG).show();
             return false;
         }
         if (phoneNumber == null || !phoneNumber.matches("[\\+]\\d{2}[\\(]\\d{2}[\\)]\\d{4}[\\-]\\d{4}")) {
-            Toast.makeText(this, "Valor incorrecto para el campo telefono! Formato: +54(11)1234-5678", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Valor incorrecto para el campo telefono! Formato: +54(11)1234-5678", Toast.LENGTH_LONG).show();
             return false;
         }
 
         return true;
     }
 
-    private void addUser(final String userLoginAccessToken, User user) {
-        Call<User> call = userService.addUser(userLoginAccessToken, user);
+    private void addUser(User user) {
+        Call<User> call = userService.addUser(prefs.getString(ACCESS_TOKEN_KEY, null), user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(UserActivity.this, "Usuario creado exitosamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserActivity.this, "Usuario creado exitosamente!", Toast.LENGTH_LONG).show();
                     onBackPressed();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
                     btnSave.setBackgroundColor(0xFF32CD32);
                     btnSave.setEnabled(true);
@@ -301,29 +290,29 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                 btnSave.setBackgroundColor(0xFF32CD32);
                 btnSave.setEnabled(true);
             }
         });
     }
 
-    private void updateUser(final String userLoginAccessToken, long userId, User user) {
-        Call<User> call = userService.updateUser(userId, userLoginAccessToken, user);
+    private void updateUser(long userId, User user) {
+        Call<User> call = userService.updateUser(userId, prefs.getString(ACCESS_TOKEN_KEY, null), user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(UserActivity.this, "Usuario modificado exitosamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserActivity.this, "Usuario modificado exitosamente!", Toast.LENGTH_LONG).show();
                     onBackPressed();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
                     btnSave.setBackgroundColor(0xFF32CD32);
                     btnSave.setEnabled(true);
@@ -335,7 +324,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                 btnSave.setBackgroundColor(0xFF32CD32);
                 btnSave.setEnabled(true);
                 btnDel.setBackgroundColor(0xFFFF0000);
@@ -344,22 +333,22 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
-    private void deleteUser(final String userLoginAccessToken, long userId) {
-        Call<User> call = userService.deleteUser(userId, userLoginAccessToken);
+    private void deleteUser(long userId) {
+        Call<User> call = userService.deleteUser(userId, prefs.getString(ACCESS_TOKEN_KEY, null));
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(UserActivity.this, "Usuario eliminado exitosamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserActivity.this, "Usuario eliminado exitosamente!", Toast.LENGTH_LONG).show();
                     onBackPressed();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
                     btnDel.setBackgroundColor(0xFFFF0000);
                     btnDel.setEnabled(true);
@@ -369,7 +358,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                 btnDel.setBackgroundColor(0xFFFF0000);
                 btnDel.setEnabled(true);
             }

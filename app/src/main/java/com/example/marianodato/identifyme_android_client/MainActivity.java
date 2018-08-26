@@ -1,7 +1,9 @@
 package com.example.marianodato.identifyme_android_client;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.marianodato.identifyme_android_client.model.User;
@@ -29,45 +30,60 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PreferenceKeys {
 
-    ListView listView;
-    UserAdapter userAdapter;
-    ProgressBar progressBar;
+    private ListView listView;
+    private UserAdapter userAdapter;
+    private SwipeRefreshLayout swipeLayout;
+    private SharedPreferences prefs;
 
-    UserService userService;
-    List<User> list = new ArrayList<User>();
-    String userLoginAccessToken;
-    final int LIMIT = 10;
-    int total = 0;
-    int offset = 0;
-    boolean isLoadingList = false;
+    private UserService userService;
+    private List<User> list = new ArrayList<User>();
+    private static final int LIMIT = 10;
+    private int total = 0;
+    private int offset = 0;
+    private boolean isLoadingList = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        prefs = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Usuarios");
         setSupportActionBar(toolbar);
 
-        Bundle extras = getIntent().getExtras();
-        final String userLoginAccessToken = extras.getString("userLoginAccessToken");
-        this.userLoginAccessToken = userLoginAccessToken;
-
-        progressBar = findViewById(R.id.progressBar);
+        swipeLayout = findViewById(R.id.swipeContainer);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getUsersList();
+            }
+        });
+        swipeLayout.setColorSchemeColors(
+                0xFFFF4081,
+                0xFFFF4081,
+                0xFFFF4081,
+                0xFFFF4081
+        );
 
         listView = findViewById(R.id.listView);
         userService = APIUtils.getUserService();
 
-        getUsersList(userLoginAccessToken);
+        getUsersList();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getUsersList(userLoginAccessToken);
+        getUsersList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
     @Override
@@ -82,24 +98,24 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menuAddUser:
                 Intent intent = new Intent(MainActivity.this, UserActivity.class);
-                intent.putExtra("userLoginAccessToken", userLoginAccessToken);
+                intent.putExtra("isPutForm", false);
                 startActivity(intent);
                 break;
 
             case R.id.menuAbout:
-                Toast.makeText(MainActivity.this, "Versión 1.0.0", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Versión 1.0.0", Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.menuLogout:
-                doLogout(userLoginAccessToken);
+                doLogout();
                 break;
         }
         return true;
     }
 
     private void loadNextData() {
-        progressBar.setVisibility(View.VISIBLE);
-        Call<UserResults> call = userService.getUsers(userLoginAccessToken, offset, LIMIT);
+        swipeLayout.setRefreshing(true);
+        Call<UserResults> call = userService.getUsers(prefs.getString(ACCESS_TOKEN_KEY, null), offset, LIMIT);
         call.enqueue(new Callback<UserResults>() {
             @Override
             public void onResponse(Call<UserResults> call, Response<UserResults> response) {
@@ -116,38 +132,38 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(MainActivity.this, jObjError.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
                 }
                 isLoadingList = false;
-                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<UserResults> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                 isLoadingList = false;
-                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
             }
         });
     }
 
-    private void getUsersList(final String userLoginAccessToken) {
-        progressBar.setVisibility(View.VISIBLE);
+    private void getUsersList() {
+        swipeLayout.setRefreshing(true);
         listView.setVisibility(View.GONE);
         offset = 0;
-        Call<UserResults> call = userService.getUsers(userLoginAccessToken, offset, LIMIT);
+        Call<UserResults> call = userService.getUsers(prefs.getString(ACCESS_TOKEN_KEY, null), offset, LIMIT);
         call.enqueue(new Callback<UserResults>() {
             @Override
             public void onResponse(Call<UserResults> call, Response<UserResults> response) {
                 if(response.isSuccessful()){
                     total = response.body().getPaging().getTotal();
                     list = response.body().getResults();
-                    userAdapter = new UserAdapter(MainActivity.this, R.layout.list_user, list, userLoginAccessToken);
+                    userAdapter = new UserAdapter(MainActivity.this, R.layout.list_user, list);
                     listView.setAdapter(userAdapter);
                     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
                         public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -177,50 +193,58 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(MainActivity.this, jObjError.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
                 }
-                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
                 listView.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Call<UserResults> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
+                Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
+                swipeLayout.setRefreshing(false);
                 listView.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    private void doLogout(final String userLoginAccessToken) {
-        Call<UserLogin> call = userService.doLogout(userLoginAccessToken);
+    private void doLogout() {
+        swipeLayout.setRefreshing(true);
+        Call<UserLogin> call = userService.doLogout(prefs.getString(ACCESS_TOKEN_KEY, null));
         call.enqueue(new Callback<UserLogin>() {
             @Override
             public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Sesión finalizada!", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
+                    SharedPreferences.Editor editor = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE).edit();
+                    editor.remove(ACCESS_TOKEN_KEY);
+                    editor.apply();
+                    Toast.makeText(MainActivity.this, "Sesión finalizada!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(MainActivity.this, jObjError.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
                 }
+                swipeLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<UserLogin> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
+                swipeLayout.setRefreshing(false);
             }
         });
     }

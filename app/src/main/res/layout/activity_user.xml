@@ -8,7 +8,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,8 +19,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
                 android:background="@color/colorPrimary"
                 app:theme="@style/ToolBarStyle"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -30,6 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Id:"
                 android:textSize="20dp" />
 
@@ -37,13 +37,17 @@
                 android:id="@+id/edtUserId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Usuario:"
                 android:textSize="20dp" />
 
@@ -51,13 +55,17 @@
                 android:id="@+id/edtUserUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Clave:"
                 android:textSize="20dp" />
 
@@ -65,13 +73,17 @@
                 android:id="@+id/edtUserPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Nombre:"
                 android:textSize="20dp" />
 
@@ -79,13 +91,17 @@
                 android:id="@+id/edtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserFingerprintId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Id de huella:"
                 android:textSize="20dp" />
 
@@ -93,13 +109,17 @@
                 android:id="@+id/edtUserFingerprintId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserFingerprintStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Estado de huella:"
                 android:textSize="20dp" />
 
@@ -114,9 +134,11 @@
                     android:id="@+id/radioFingerprintStatusUnenrolled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
                     android:checked="true"
                     android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="14dp"
                     android:text="No cargada" />
 
@@ -127,6 +149,8 @@
                     android:layout_gravity="center"
                     android:checked="false"
                     android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="14dp"
                     android:text="Pendiente" />
 
@@ -134,7 +158,9 @@
                     android:id="@+id/radioFingerprintStatusEnrolled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:checked="false"
                     android:layout_weight="1"
                     android:textSize="14dp"
@@ -146,6 +172,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Dni:"
                 android:textSize="20dp" />
 
@@ -153,13 +181,17 @@
                 android:id="@+id/edtUserDni"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Género:"
                 android:textSize="20dp" />
 
@@ -174,19 +206,23 @@
                     android:id="@+id/radioGenderMale"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
                     android:checked="true"
                     android:layout_weight="1"
                     android:textSize="14dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginLeft="50dp"
                     android:text="Hombre" />
 
                 <RadioButton
                     android:id="@+id/radioGenderFemale"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:checked="false"
                     android:layout_weight="1"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginLeft="80dp"
                     android:textSize="14dp"
                     android:text="Mujer" />
             </RadioGroup>
@@ -196,6 +232,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Email:"
                 android:textSize="20dp" />
 
@@ -203,13 +241,17 @@
                 android:id="@+id/edtUserEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Teléfono:"
                 android:textSize="20dp" />
 
@@ -217,13 +259,17 @@
                 android:id="@+id/edtUserPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserIsAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Admin:"
                 android:textSize="20dp" />
 
@@ -238,9 +284,11 @@
                     android:id="@+id/radioIsAdmin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
                     android:checked="true"
                     android:layout_weight="1"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginLeft="50dp"
                     android:textSize="14dp"
                     android:text="Sí" />
 
@@ -248,9 +296,11 @@
                     android:id="@+id/radioIsNotAdmin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:checked="false"
                     android:layout_weight="1"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginLeft="80dp"
                     android:textSize="14dp"
                     android:text="No" />
             </RadioGroup>
@@ -260,6 +310,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="Creado:"
                 android:textSize="20dp" />
 
@@ -267,13 +319,17 @@
                 android:id="@+id/edtUserDateCreated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/txtUserLastUpdated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Modificado:"
                 android:textSize="20dp" />
 
@@ -281,12 +337,17 @@
                 android:id="@+id/edtUserLastUpdated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="#32CD32"
                 android:text="GUARDAR"
@@ -297,6 +358,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FF0000"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="ELIMINAR"
                 android:textColor="#ffffff" />
 

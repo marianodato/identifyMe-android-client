@@ -18,13 +18,11 @@ public class UserAdapter extends ArrayAdapter<User> {
 
     private Context context;
     private List<User> users;
-    private String userLoginAccessToken;
 
-    public UserAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<User> objects, @NonNull String userLoginAccessToken) {
+    public UserAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
         this.context = context;
         this.users = objects;
-        this.userLoginAccessToken = userLoginAccessToken;
     }
 
     @Override
@@ -74,7 +72,6 @@ public class UserAdapter extends ArrayAdapter<User> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserActivity.class);
-                intent.putExtra("userLoginAccessToken", userLoginAccessToken);
 
                 intent.putExtra("userId", String.valueOf(users.get(pos).getId()));
                 intent.putExtra("userUsername", String.valueOf(users.get(pos).getUsername()));
