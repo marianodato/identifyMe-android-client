@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.marianodato.identifyme_android_client.model.UserLogin;
 import com.example.marianodato.identifyme_android_client.remote.APIUtils;
 import com.example.marianodato.identifyme_android_client.remote.UserService;
+import com.example.marianodato.identifyme_android_client.utils.PreferenceKeys;
 
 import org.json.JSONObject;
 
@@ -70,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
     @Override
     protected void onResume() {
         super.onResume();
-        btnLogin.setBackgroundColor(0xFF3F51B5);
+        btnLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         btnLogin.setEnabled(true);
     }
 
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
-                    btnLogin.setBackgroundColor(0xFF3F51B5);
+                    btnLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     btnLogin.setEnabled(true);
                 }
             }
@@ -119,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
             public void onFailure(Call<UserLogin> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                btnLogin.setBackgroundColor(0xFF3F51B5);
+                btnLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 btnLogin.setEnabled(true);
             }
         });

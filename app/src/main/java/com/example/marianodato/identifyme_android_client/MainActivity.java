@@ -20,6 +20,7 @@ import com.example.marianodato.identifyme_android_client.model.UserLogin;
 import com.example.marianodato.identifyme_android_client.model.UserResults;
 import com.example.marianodato.identifyme_android_client.remote.APIUtils;
 import com.example.marianodato.identifyme_android_client.remote.UserService;
+import com.example.marianodato.identifyme_android_client.utils.PreferenceKeys;
 
 import org.json.JSONObject;
 
@@ -63,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements PreferenceKeys {
             }
         });
         swipeLayout.setColorSchemeColors(
-                0xFFFF4081,
-                0xFFFF4081,
-                0xFFFF4081,
-                0xFFFF4081
+                getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorAccent)
         );
 
         listView = findViewById(R.id.listView);

@@ -1,4 +1,4 @@
-package com.example.marianodato.identifyme_android_client;
+package com.example.marianodato.identifyme_android_client.utils;
 
 public interface PreferenceKeys {
 

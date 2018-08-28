@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.marianodato.identifyme_android_client.model.User;
 import com.example.marianodato.identifyme_android_client.remote.APIUtils;
 import com.example.marianodato.identifyme_android_client.remote.UserService;
+import com.example.marianodato.identifyme_android_client.utils.PreferenceKeys;
 
 import org.json.JSONObject;
 
@@ -202,7 +203,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
                     }
                 }
 
-                btnSave.setBackgroundColor(0xFF32CD32);
+                btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 btnSave.setEnabled(true);
             }
         });
@@ -282,7 +283,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
-                    btnSave.setBackgroundColor(0xFF32CD32);
+                    btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     btnSave.setEnabled(true);
                 }
             }
@@ -291,7 +292,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                btnSave.setBackgroundColor(0xFF32CD32);
+                btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 btnSave.setEnabled(true);
             }
         });
@@ -314,9 +315,9 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
-                    btnSave.setBackgroundColor(0xFF32CD32);
+                    btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     btnSave.setEnabled(true);
-                    btnDel.setBackgroundColor(0xFFFF0000);
+                    btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
                     btnDel.setEnabled(true);
                 }
             }
@@ -325,9 +326,9 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                btnSave.setBackgroundColor(0xFF32CD32);
+                btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 btnSave.setEnabled(true);
-                btnDel.setBackgroundColor(0xFFFF0000);
+                btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
                 btnDel.setEnabled(true);
             }
         });
@@ -350,7 +351,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
                         Log.e("ERROR: ", e.getMessage());
                         Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
                     }
-                    btnDel.setBackgroundColor(0xFFFF0000);
+                    btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
                     btnDel.setEnabled(true);
                 }
             }
@@ -359,7 +360,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
                 Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                btnDel.setBackgroundColor(0xFFFF0000);
+                btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
                 btnDel.setEnabled(true);
             }
         });
