@@ -3,18 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuAddUser"
-        android:icon="@drawable/ic_action_add"
+        android:id="@+id/menuSearchUsers"
+        android:icon="@drawable/ic_action_search"
         android:orderInCategory="100"
-        android:title="Crear usuario"
+        android:title="@string/BUSCAR_USUARIOS"
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menuSortAndFilterUsers"
+        android:icon="@drawable/ic_action_filter_by"
+        android:orderInCategory="100"
+        android:title="@string/FILTRAR_USUARIOS"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menuSortByUsers"
+                android:title="@string/TITULO_ORDENAR_POR"
+                android:icon="@drawable/ic_action_sort_by" />
+            <item
+                android:id="@+id/menuFilterByUsers"
+                android:title="@string/TITULO_FILTRAR_POR"
+                android:icon="@drawable/ic_action_filter_by" />
+            <item
+                android:id="@+id/menuOrderUsers"
+                android:title="@string/TITULO_ORDEN"
+                android:icon="@drawable/ic_action_order" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menuAddUser"
+        android:title="@string/NUEVO_USUARIO" />
+
+    <item
         android:id="@+id/menuAbout"
-        android:title="Acerca de" />
+        android:title="@string/ACERCA_DE" />
 
     <item
         android:id="@+id/menuLogout"
-        android:title="Salir" />
+        android:title="@string/SALIR" />
 
 </menu>

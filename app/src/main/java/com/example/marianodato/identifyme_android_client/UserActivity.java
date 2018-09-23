@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,15 +17,16 @@ import android.widget.Toast;
 import com.example.marianodato.identifyme_android_client.model.User;
 import com.example.marianodato.identifyme_android_client.remote.APIUtils;
 import com.example.marianodato.identifyme_android_client.remote.UserService;
-import com.example.marianodato.identifyme_android_client.utils.PreferenceKeys;
-
-import org.json.JSONObject;
+import com.example.marianodato.identifyme_android_client.utils.CommonKeys;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserActivity extends AppCompatActivity implements PreferenceKeys {
+import static com.example.marianodato.identifyme_android_client.remote.APIUtils.onFailureGenericLogic;
+import static com.example.marianodato.identifyme_android_client.remote.APIUtils.onResponseErrorGenericLogic;
+
+public class UserActivity extends AppCompatActivity implements CommonKeys {
 
     private TextView txtUserId;
     private TextView txtUserFingerprintId;
@@ -51,8 +51,14 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
     private RadioButton radioUserFingerprintStatus;
     private Button btnSave;
     private Button btnDel;
-    private SharedPreferences prefs;
-    private UserService userService;
+
+    private static SharedPreferences prefs;
+    private static UserService userService;
+
+    private static final String NULL_STRING = "null";
+    private static final String USERNAME_REGEX = "(?=^.{6,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$";
+    private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@!#%*?&._-])[A-Za-z\\d$@!#%*?&._-]{8,}";
+    private static final String PHONE_NUMBER_REGEX = "[\\+]\\d{2}[\\(]\\d{2}[\\)]\\d{4}[\\-]\\d{4}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +68,13 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
         prefs = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
 
         Bundle extras = getIntent().getExtras();
-        final boolean isPutForm = extras.getBoolean("isPutForm");
+        final boolean isPutForm = extras.getBoolean(IS_PUT_FORM);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (isPutForm) {
-            toolbar.setTitle("Modificar usuario");
+            toolbar.setTitle(getString(R.string.MODIFICAR_USUARIO));
         } else {
-            toolbar.setTitle("Nuevo usuario");
+            toolbar.setTitle(getString(R.string.NUEVO_USUARIO));
         }
 
         setSupportActionBar(toolbar);
@@ -97,19 +103,19 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
 
         userService = APIUtils.getUserService();
 
-        final String userId = extras.getString("userId");
-        final String userUsername = extras.getString("userUsername");
-        final String userPassword = extras.getString("userPassword");
-        final String userName = extras.getString("userName");
-        final String userFingerprintId = extras.getString("userFingerprintId");
-        final String userFingerprintStatus = extras.getString("userFingerprintStatus");
-        final String userDni = extras.getString("userDni");
-        final String userGender = extras.getString("userGender");
-        final String userEmail = extras.getString("userEmail");
-        final String userPhoneNumber = extras.getString("userPhoneNumber");
-        final boolean userIsAdmin = extras.getBoolean("userIsAdmin");
-        final String userDateCreated = extras.getString("userDateCreated");
-        final String userLastUpdated = extras.getString("userLastUpdated");
+        final String userId = extras.getString(USER_ID);
+        final String userUsername = extras.getString(USER_USERNAME);
+        final String userPassword = extras.getString(USER_PASSWORD);
+        final String userName = extras.getString(USER_NAME);
+        final String userFingerprintId = extras.getString(USER_FINGERPRINT_ID);
+        final String userFingerprintStatus = extras.getString(USER_FINGERPRINT_STATUS);
+        final String userDni = extras.getString(USER_DNI);
+        final String userGender = extras.getString(USER_GENDER);
+        final String userEmail = extras.getString(USER_EMAIL);
+        final String userPhoneNumber = extras.getString(USER_PHONE_NUMBER);
+        final boolean userIsAdmin = extras.getBoolean(USER_IS_ADMIN);
+        final String userDateCreated = extras.getString(USER_DATE_CREATED);
+        final String userLastUpdated = extras.getString(USER_LAST_UPDATED);
 
         if (isPutForm) {
             edtUserId.setText(userId);
@@ -128,7 +134,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
             edtUserLastUpdated.setText(userLastUpdated);
             edtUserLastUpdated.setFocusable(false);
 
-            if (userGender.equals("male")) {
+            if (userGender.equals(MALE_GENDER)) {
                 radioGrpUserGender.check(R.id.radioGenderMale);
             } else {
                 radioGrpUserGender.check(R.id.radioGenderFemale);
@@ -140,9 +146,9 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
                 radioGrpUserIsAdmin.check(R.id.radioIsNotAdmin);
             }
 
-            if (userFingerprintStatus.equals("enrolled")) {
+            if (userFingerprintStatus.equals(STATUS_ENROLLED)) {
                 radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusEnrolled);
-            } else if (userFingerprintStatus.equals("pending")) {
+            } else if (userFingerprintStatus.equals(STATUS_PENDING)) {
                 radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusPending);
             } else {
                 radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusUnenrolled);
@@ -175,24 +181,24 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
                 String userPhoneNumber = edtUserPhoneNumber.getText().toString();
                 int selectedId = radioGrpUserGender.getCheckedRadioButtonId();
                 radioUserGender = findViewById(selectedId);
-                String userGender = radioUserGender.getText().equals("Hombre") ? "male" : "female";
+                String userGender = radioUserGender.getText().equals(getString(R.string.HOMBRE)) ? MALE_GENDER : FEMALE_GENDER;
                 selectedId = radioGrpUserIsAdmin.getCheckedRadioButtonId();
                 radioUserIsAdmin = findViewById(selectedId);
-                boolean userIsAdmin = radioUserIsAdmin.getText().equals("Sí");
+                boolean userIsAdmin = radioUserIsAdmin.getText().equals(getString(R.string.SI));
 
                 if (isPutForm) {
                     selectedId = radioGrpUserFingerprintStatus.getCheckedRadioButtonId();
                     radioUserFingerprintStatus = findViewById(selectedId);
                     String userFingerprintStatus;
-                    if (radioUserFingerprintStatus.getText().equals("Cargada")) {
-                        userFingerprintStatus = "enrolled";
-                    } else if (radioUserFingerprintStatus.getText().equals("Pendiente")) {
-                        userFingerprintStatus = "pending";
+                    if (radioUserFingerprintStatus.getText().equals(getString(R.string.CARGADA))) {
+                        userFingerprintStatus = STATUS_ENROLLED;
+                    } else if (radioUserFingerprintStatus.getText().equals(getString(R.string.PENDIENTE))) {
+                        userFingerprintStatus = STATUS_PENDING;
                     } else {
-                        userFingerprintStatus = "unenrolled";
+                        userFingerprintStatus = STATUS_UNENROLLED;
                     }
                     if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
-                        userPassword = userPassword.equals("null") ? null : userPassword;
+                        userPassword = userPassword.equals(NULL_STRING) ? null : userPassword;
                         User user = new User(userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin, userFingerprintStatus);
                         updateUser(Long.parseLong(userId), user);
                     }
@@ -230,36 +236,36 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
     }
 
     private boolean validateUserFields(String username, String password, String name, String dni, String email, String phoneNumber, boolean isPutForm) {
-        if (username == null || !username.matches("(?=^.{6,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$")) {
-            Toast.makeText(this, "Valor incorrecto para el campo usuario! Formato: Sólo un caracter especial (._-) permitido y no debe estar en los extremos. El primer caracter no puede ser numérico. Todos los demás caracteres permitidos son letras y números. La longitud total debe estar entre 6 y 20 caracteres", Toast.LENGTH_LONG).show();
+        if (username == null || !username.matches(USERNAME_REGEX)) {
+            Toast.makeText(this, getString(R.string.VALOR_INCORRECTO_CAMPO_USUARIO), Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if (!isPutForm || !password.equals("null")) {
-            if (password == null || !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@!#%*?&._-])[A-Za-z\\d$@!#%*?&._-]{8,}")) {
-                Toast.makeText(this, "Valor incorrecto para el campo clave! Formato: Mínimo 8 caracteres, al menos 1 en mayúscula, 1 en minúscula, 1 número y 1 caracter especial", Toast.LENGTH_LONG).show();
+        if (!isPutForm || !password.equals(NULL_STRING)) {
+            if (password == null || !password.matches(PASSWORD_REGEX)) {
+                Toast.makeText(this, getString(R.string.VALOR_INCORRECTO_CAMPO_CLAVE), Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
         if (username.equals(password)) {
-            Toast.makeText(this, "El usuario no puede ser igual a la clave!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.USUARIO_NO_PUEDE_SER_IGUAL_CLAVE), Toast.LENGTH_LONG).show();
             return false;
         }
         if (name == null || name.trim().length() == 0) {
-            Toast.makeText(this, "El campo nombre es obligatorio!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.CAMPO_NOMBRE_OBLIGATORIO), Toast.LENGTH_LONG).show();
             return false;
         }
         if (dni == null || dni.trim().length() == 0) {
-            Toast.makeText(this, "El campo dni es obligatorio!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.CAMPO_DNI_OBLIGATORIO), Toast.LENGTH_LONG).show();
             return false;
         }
         if (email == null || email.trim().length() == 0 || !email.contains("@")) {
-            Toast.makeText(this, "Valor incorrecto para el campo email! Debes ingresar un mail válido", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.CAMPO_EMAIL_INCORRECTO), Toast.LENGTH_LONG).show();
             return false;
         }
-        if (phoneNumber == null || !phoneNumber.matches("[\\+]\\d{2}[\\(]\\d{2}[\\)]\\d{4}[\\-]\\d{4}")) {
-            Toast.makeText(this, "Valor incorrecto para el campo telefono! Formato: +54(11)1234-5678", Toast.LENGTH_LONG).show();
+        if (phoneNumber == null || !phoneNumber.matches(PHONE_NUMBER_REGEX)) {
+            Toast.makeText(this, getString(R.string.CAMPO_TELEFONO_INCORRECTO), Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -272,17 +278,10 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(UserActivity.this, "Usuario creado exitosamente!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserActivity.this, getString(R.string.USUARIO_CREADO), Toast.LENGTH_LONG).show();
                     onBackPressed();
                 } else {
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                    }
+                    onResponseErrorGenericLogic(UserActivity.this, response, true);
                     btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     btnSave.setEnabled(true);
                 }
@@ -290,8 +289,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
+                onFailureGenericLogic(UserActivity.this, t);
                 btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 btnSave.setEnabled(true);
             }
@@ -304,17 +302,10 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(UserActivity.this, "Usuario modificado exitosamente!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserActivity.this, getString(R.string.USUARIO_MODIFICADO), Toast.LENGTH_LONG).show();
                     onBackPressed();
                 } else {
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                    }
+                    onResponseErrorGenericLogic(UserActivity.this, response, true);
                     btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     btnSave.setEnabled(true);
                     btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
@@ -324,8 +315,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
+                onFailureGenericLogic(UserActivity.this, t);
                 btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 btnSave.setEnabled(true);
                 btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
@@ -340,17 +330,10 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(UserActivity.this, "Usuario eliminado exitosamente!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserActivity.this, getString(R.string.USUARIO_ELIMINADO), Toast.LENGTH_LONG).show();
                     onBackPressed();
                 } else {
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(UserActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                    }
+                    onResponseErrorGenericLogic(UserActivity.this, response, true);
                     btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
                     btnDel.setEnabled(true);
                 }
@@ -358,8 +341,7 @@ public class UserActivity extends AppCompatActivity implements PreferenceKeys {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(UserActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
+                onFailureGenericLogic(UserActivity.this, t);
                 btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
                 btnDel.setEnabled(true);
             }

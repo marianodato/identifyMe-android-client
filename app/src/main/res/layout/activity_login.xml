@@ -26,7 +26,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="Usuario:"
+            android:text="@string/USUARIO_INPUT"
             android:textSize="20dp" />
 
         <EditText
@@ -43,7 +43,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:text="Clave:"
+            android:text="@string/CLAVE_INPUT"
             android:textSize="20dp" />
 
         <EditText
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:text="ENTRAR"
+            android:text="@string/ENTRAR"
             android:textColor="@android:color/white"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
@@ -69,4 +69,3 @@
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
-

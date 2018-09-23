@@ -31,7 +31,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Id:"
+                android:text="@string/ID_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -49,7 +49,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Usuario:"
+                android:text="@string/USUARIO_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -67,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Clave:"
+                android:text="@string/CLAVE_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -85,7 +85,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Nombre:"
+                android:text="@string/NOMBRE_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -103,7 +103,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Id de huella:"
+                android:text="@string/ID_HUELLA_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -121,7 +121,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Estado de huella:"
+                android:text="@string/ESTADO_HUELLA_INPUT"
                 android:textSize="20dp" />
 
             <RadioGroup
@@ -141,7 +141,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:textSize="14dp"
-                    android:text="No cargada" />
+                    android:text="@string/NO_CARGADA" />
 
                 <RadioButton
                     android:id="@+id/radioFingerprintStatusPending"
@@ -153,7 +153,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:textSize="14dp"
-                    android:text="Pendiente" />
+                    android:text="@string/PENDIENTE" />
 
                 <RadioButton
                     android:id="@+id/radioFingerprintStatusEnrolled"
@@ -165,7 +165,7 @@
                     android:checked="false"
                     android:layout_weight="1"
                     android:textSize="14dp"
-                    android:text="Cargada" />
+                    android:text="@string/CARGADA" />
             </RadioGroup>
 
             <TextView
@@ -175,7 +175,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Dni:"
+                android:text="@string/DNI_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -193,7 +193,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Género:"
+                android:text="@string/GENERO_INPUT"
                 android:textSize="20dp" />
 
             <RadioGroup
@@ -213,7 +213,7 @@
                     android:textSize="14dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginLeft="50dp"
-                    android:text="Hombre" />
+                    android:text="@string/HOMBRE" />
 
                 <RadioButton
                     android:id="@+id/radioGenderFemale"
@@ -225,7 +225,7 @@
                     android:layout_marginStart="80dp"
                     android:layout_marginLeft="80dp"
                     android:textSize="14dp"
-                    android:text="Mujer" />
+                    android:text="@string/MUJER" />
             </RadioGroup>
 
             <TextView
@@ -235,7 +235,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Email:"
+                android:text="@string/EMAIL_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -253,7 +253,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Teléfono:"
+                android:text="@string/TELEFONO_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -271,7 +271,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Admin:"
+                android:text="@string/ADMIN_INPUT"
                 android:textSize="20dp" />
 
             <RadioGroup
@@ -291,7 +291,7 @@
                     android:layout_marginStart="50dp"
                     android:layout_marginLeft="50dp"
                     android:textSize="14dp"
-                    android:text="Sí" />
+                    android:text="@string/SI" />
 
                 <RadioButton
                     android:id="@+id/radioIsNotAdmin"
@@ -303,7 +303,7 @@
                     android:layout_marginStart="80dp"
                     android:layout_marginLeft="80dp"
                     android:textSize="14dp"
-                    android:text="No" />
+                    android:text="@string/NO" />
             </RadioGroup>
 
             <TextView
@@ -313,7 +313,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:text="Creado:"
+                android:text="@string/CREADO_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -331,7 +331,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Modificado:"
+                android:text="@string/MODIFICADO_INPUT"
                 android:textSize="20dp" />
 
             <EditText
@@ -351,7 +351,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorGreen"
-                android:text="GUARDAR"
+                android:text="@string/GUARDAR"
                 android:textColor="@android:color/white" />
 
             <Button
@@ -363,7 +363,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="ELIMINAR"
+                android:text="@string/ELIMINAR"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

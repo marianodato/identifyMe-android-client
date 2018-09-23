@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,15 +14,16 @@ import android.widget.Toast;
 import com.example.marianodato.identifyme_android_client.model.UserLogin;
 import com.example.marianodato.identifyme_android_client.remote.APIUtils;
 import com.example.marianodato.identifyme_android_client.remote.UserService;
-import com.example.marianodato.identifyme_android_client.utils.PreferenceKeys;
-
-import org.json.JSONObject;
+import com.example.marianodato.identifyme_android_client.utils.CommonKeys;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
+import static com.example.marianodato.identifyme_android_client.remote.APIUtils.onFailureGenericLogic;
+import static com.example.marianodato.identifyme_android_client.remote.APIUtils.onResponseErrorGenericLogic;
+
+public class LoginActivity extends AppCompatActivity implements CommonKeys {
 
     private EditText edtUserLoginUsername;
     private EditText edtUserLoginPassword;
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Iniciar sesión");
+        toolbar.setTitle(getString(R.string.INICIAR_SESION));
         setSupportActionBar(toolbar);
 
         edtUserLoginUsername = findViewById(R.id.edtUserLoginUsername);
@@ -77,11 +77,11 @@ public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
 
     private boolean validateLoginFields(String username, String password) {
         if (username == null || username.trim().length() == 0) {
-            Toast.makeText(this, "El campo usuario es obligatorio!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.CAMPO_USUARIO_OBLIGATORIO), Toast.LENGTH_LONG).show();
             return false;
         }
         if (password == null || password.trim().length() == 0) {
-            Toast.makeText(this, "El campo clave es obligatorio!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.CAMPO_CLAVE_OBLIGATORIO), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -103,14 +103,7 @@ public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
                     startActivity(intent);
                     finish();
                 } else {
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        Log.e("ERROR: ", jObjError.getString("message"));
-                        Toast.makeText(LoginActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Log.e("ERROR: ", e.getMessage());
-                        Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
-                    }
+                    onResponseErrorGenericLogic(LoginActivity.this, response, false);
                     btnLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     btnLogin.setEnabled(true);
                 }
@@ -118,8 +111,7 @@ public class LoginActivity extends AppCompatActivity implements PreferenceKeys {
 
             @Override
             public void onFailure(Call<UserLogin> call, Throwable t) {
-                Log.e("ERROR: ", t.getMessage());
-                Toast.makeText(LoginActivity.this, "Ups! Algo salio mal...", Toast.LENGTH_LONG).show();
+                onFailureGenericLogic(LoginActivity.this, t);
                 btnLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 btnLogin.setEnabled(true);
             }

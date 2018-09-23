@@ -22,7 +22,7 @@ public interface UserService {
     Call<UserLogin> doLogout(@Query("accessToken") String accessToken);
 
     @GET("users/")
-    Call<UserResults> getUsers(@Query("accessToken") String accessToken, @Query("offset") int offset, @Query("limit") int limit);
+    Call<UserResults> getUsers(@Query("accessToken") String accessToken, @Query("offset") int offset, @Query("limit") int limit, @Query("fingerprintStatus") String filterByOption, @Query("order") String orderOption, @Query("sortBy") String sortByOption);
 
     @POST("users/")
     Call<User> addUser(@Query("accessToken") String accessToken, @Body User user);
