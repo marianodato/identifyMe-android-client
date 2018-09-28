@@ -15,10 +15,10 @@ import com.example.marianodato.identifyme_android_client.utils.CommonKeys;
 
 import java.util.List;
 
-public class UserAdapter extends ArrayAdapter<User> implements CommonKeys {
+class UserAdapter extends ArrayAdapter<User> implements CommonKeys {
 
-    private Context context;
-    private List<User> users;
+    private final Context context;
+    private final List<User> users;
 
     public UserAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
@@ -26,8 +26,9 @@ public class UserAdapter extends ArrayAdapter<User> implements CommonKeys {
         this.users = objects;
     }
 
+    @NonNull
     @Override
-    public View getView(final int pos, View convertView, ViewGroup parent){
+    public View getView(final int pos, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_user, parent, false);
 
@@ -53,12 +54,16 @@ public class UserAdapter extends ArrayAdapter<User> implements CommonKeys {
             txtUserFingerprintId.setText(context.getString(R.string.ID_HUELLA_VACIO));
         }
 
-        if (users.get(pos).getFingerprintStatus().equals(STATUS_ENROLLED)) {
-            txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_CARGADA));
-        } else if (users.get(pos).getFingerprintStatus().equals(STATUS_PENDING)) {
-            txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_PENDIENTE));
-        } else {
-            txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_NO_CARGADA));
+        switch (users.get(pos).getFingerprintStatus()) {
+            case STATUS_ENROLLED:
+                txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_CARGADA));
+                break;
+            case STATUS_PENDING:
+                txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_PENDIENTE));
+                break;
+            default:
+                txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_NO_CARGADA));
+                break;
         }
 
         txtUserDni.setText(context.getString(R.string.DNI_VALOR, users.get(pos).getDni()));

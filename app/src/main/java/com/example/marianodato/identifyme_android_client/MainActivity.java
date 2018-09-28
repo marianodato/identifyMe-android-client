@@ -5,8 +5,11 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.marianodato.identifyme_android_client.model.User;
@@ -35,19 +39,24 @@ import static com.example.marianodato.identifyme_android_client.remote.APIUtils.
 
 public class MainActivity extends AppCompatActivity implements CommonKeys, ToolbarDialogFragment.NoticeDialogListener {
 
+    private Menu menu;
     private ListView listView;
+    private TextView emptyView;
     private UserAdapter userAdapter;
     private SwipeRefreshLayout swipeLayout;
 
+    private static Handler handler;
     private static SharedPreferences prefs;
     private static UserService userService;
-    private static List<User> list = new ArrayList<User>();
+    private static List<User> list = new ArrayList<>();
     private static final int LIMIT = 10;
+    private static final int SEARCH_DELAY = 1000;
     private static int total = 0;
     private static int offset = 0;
     private static String sortByOption;
     private static String filterByOption;
     private static String orderOption;
+    private static String searchOption;
     private static boolean isLoadingList = false;
 
     private static final String FILTER_BY_SELECTED_INDEX_KEY = "filterBySelectedIndex";
@@ -92,7 +101,11 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
         );
 
         listView = findViewById(R.id.listView);
+        emptyView = findViewById(R.id.emptyView);
+        listView.setEmptyView(emptyView);
+        emptyView.setVisibility(View.GONE);
         userService = APIUtils.getUserService();
+        handler = new Handler();
 
         getUsersList();
     }
@@ -112,21 +125,26 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
+        this.menu = menu;
         return true;
     }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, String dialogType, int selectedItemIndex) {
         SharedPreferences.Editor editor = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE).edit();
-        if (dialogType.equals(DIALOG_TYPE_FILTER_BY)) {
-            editor.putInt(FILTER_BY_SELECTED_INDEX_KEY, selectedItemIndex);
-            filterByOption = FILTER_BY_OPTIONS[selectedItemIndex];
-        } else if (dialogType.equals(DIALOG_TYPE_SORT_BY)) {
-            editor.putInt(SORT_BY_SELECTED_INDEX_KEY, selectedItemIndex);
-            sortByOption = SORT_BY_OPTIONS[selectedItemIndex];
-        } else {
-            editor.putInt(ORDER_SELECTED_INDEX_KEY, selectedItemIndex);
-            orderOption = ORDER_OPTIONS[selectedItemIndex];
+        switch (dialogType) {
+            case DIALOG_TYPE_FILTER_BY:
+                editor.putInt(FILTER_BY_SELECTED_INDEX_KEY, selectedItemIndex);
+                filterByOption = FILTER_BY_OPTIONS[selectedItemIndex];
+                break;
+            case DIALOG_TYPE_SORT_BY:
+                editor.putInt(SORT_BY_SELECTED_INDEX_KEY, selectedItemIndex);
+                sortByOption = SORT_BY_OPTIONS[selectedItemIndex];
+                break;
+            default:
+                editor.putInt(ORDER_SELECTED_INDEX_KEY, selectedItemIndex);
+                orderOption = ORDER_OPTIONS[selectedItemIndex];
+                break;
         }
         editor.apply();
         getUsersList();
@@ -149,6 +167,50 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
         switch (item.getItemId()) {
 
             case R.id.menuSearchUsers:
+                SearchView mySearchView = (SearchView) item.getActionView();
+                mySearchView.setQueryHint(getString(R.string.BUSCAR_USUARIOS));
+
+                mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        searchOption = newText;
+                        handler.removeCallbacksAndMessages(null);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getUsersList();
+                            }
+                        }, SEARCH_DELAY);
+                        return true;
+                    }
+                });
+
+                mySearchView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                    @Override
+                    public void onViewDetachedFromWindow(View arg0) {
+                        // if search view is closed
+                        menu.findItem(R.id.menuSortAndFilterUsers).setVisible(true);
+                        menu.findItem(R.id.menuAddUser).setVisible(true);
+                        menu.findItem(R.id.menuAbout).setVisible(true);
+                        menu.findItem(R.id.menuLogout).setVisible(true);
+                        searchOption = null;
+                        getUsersList();
+                    }
+
+                    @Override
+                    public void onViewAttachedToWindow(View arg0) {
+                        // if search view is opened
+                        menu.findItem(R.id.menuSortAndFilterUsers).setVisible(false);
+                        menu.findItem(R.id.menuAddUser).setVisible(false);
+                        menu.findItem(R.id.menuAbout).setVisible(false);
+                        menu.findItem(R.id.menuLogout).setVisible(false);
+                    }
+                });
                 break;
 
             case R.id.menuSortByUsers:
@@ -195,12 +257,18 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
         return true;
     }
 
+    private void removeAdapterItems() {
+        list = new ArrayList<>();
+        userAdapter = new UserAdapter(MainActivity.this, R.layout.list_user, list);
+        listView.setAdapter(userAdapter);
+    }
+
     private void loadNextData() {
         swipeLayout.setRefreshing(true);
-        Call<UserResults> call = userService.getUsers(prefs.getString(ACCESS_TOKEN_KEY, null), offset, LIMIT, filterByOption, orderOption, sortByOption);
+        Call<UserResults> call = userService.getUsers(prefs.getString(ACCESS_TOKEN_KEY, null), offset, LIMIT, filterByOption, orderOption, sortByOption, searchOption);
         call.enqueue(new Callback<UserResults>() {
             @Override
-            public void onResponse(Call<UserResults> call, Response<UserResults> response) {
+            public void onResponse(@NonNull Call<UserResults> call, @NonNull Response<UserResults> response) {
                 if (response.isSuccessful()) {
                     total = response.body().getPaging().getTotal();
                     list = response.body().getResults();
@@ -212,28 +280,31 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
                     userAdapter.notifyDataSetChanged();
                 } else {
                     onResponseErrorGenericLogic(MainActivity.this, response, true);
+                    removeAdapterItems();
+                    emptyView.setVisibility(View.VISIBLE);
                 }
                 isLoadingList = false;
                 swipeLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<UserResults> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserResults> call, @NonNull Throwable t) {
                 onFailureGenericLogic(MainActivity.this, t);
+                removeAdapterItems();
                 isLoadingList = false;
                 swipeLayout.setRefreshing(false);
+                emptyView.setVisibility(View.VISIBLE);
             }
         });
     }
 
     private void getUsersList() {
         swipeLayout.setRefreshing(true);
-        listView.setVisibility(View.GONE);
         offset = 0;
-        Call<UserResults> call = userService.getUsers(prefs.getString(ACCESS_TOKEN_KEY, null), offset, LIMIT, filterByOption, orderOption, sortByOption);
+        Call<UserResults> call = userService.getUsers(prefs.getString(ACCESS_TOKEN_KEY, null), offset, LIMIT, filterByOption, orderOption, sortByOption, searchOption);
         call.enqueue(new Callback<UserResults>() {
             @Override
-            public void onResponse(Call<UserResults> call, Response<UserResults> response) {
+            public void onResponse(@NonNull Call<UserResults> call, @NonNull Response<UserResults> response) {
                 if(response.isSuccessful()){
                     total = response.body().getPaging().getTotal();
                     list = response.body().getResults();
@@ -244,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
                         }
 
                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                            // Si llego al final de la lista
+                            // if end of list
                             if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
                                 if (!isLoadingList) {
                                     int offsetCount = total / LIMIT;
@@ -253,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
                                         offsetCount++;
                                     }
 
-                                    // Si hay mas informacion para traer
+                                    // if there is more information
                                     if (offset + 1 < offsetCount) {
                                         offset++;
                                         isLoadingList = true;
@@ -265,16 +336,18 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
                     });
                 } else {
                     onResponseErrorGenericLogic(MainActivity.this, response, true);
+                    removeAdapterItems();
+                    emptyView.setVisibility(View.VISIBLE);
                 }
                 swipeLayout.setRefreshing(false);
-                listView.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onFailure(Call<UserResults> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserResults> call, @NonNull Throwable t) {
                 onFailureGenericLogic(MainActivity.this, t);
+                removeAdapterItems();
                 swipeLayout.setRefreshing(false);
-                listView.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -284,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
         Call<UserLogin> call = userService.doLogout(prefs.getString(ACCESS_TOKEN_KEY, null));
         call.enqueue(new Callback<UserLogin>() {
             @Override
-            public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
+            public void onResponse(@NonNull Call<UserLogin> call, @NonNull Response<UserLogin> response) {
                 if (response.isSuccessful()) {
                     SharedPreferences.Editor editor = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE).edit();
                     editor.remove(ACCESS_TOKEN_KEY);
@@ -300,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
             }
 
             @Override
-            public void onFailure(Call<UserLogin> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserLogin> call, @NonNull Throwable t) {
                 onFailureGenericLogic(MainActivity.this, t);
                 swipeLayout.setRefreshing(false);
             }

@@ -27,7 +27,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="@string/USUARIO_INPUT"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edtUserLoginUsername"
@@ -44,7 +44,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:text="@string/CLAVE_INPUT"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edtUserLoginPassword"

@@ -30,17 +30,17 @@ public class APIUtils implements CommonKeys {
     }
 
     public static void onFailureGenericLogic(Context context, Throwable t) {
-        Log.e("ERROR: ", t.getMessage());
+        Log.e(LOG_ERROR, t.getMessage());
         Toast.makeText(context, context.getString(R.string.ERROR_GENERICO), Toast.LENGTH_LONG).show();
     }
 
     public static void onResponseErrorGenericLogic(Context context, Response response, boolean handleUnauthorizedResponse) {
         try {
             JSONObject jObjError = new JSONObject(response.errorBody().string());
-            Log.e("ERROR: ", jObjError.getString(API_MESSAGE));
+            Log.e(LOG_ERROR, jObjError.getString(API_MESSAGE));
             Toast.makeText(context, jObjError.getString(API_MESSAGE), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Log.e("ERROR: ", e.getMessage());
+            Log.e(LOG_ERROR, e.getMessage());
             Toast.makeText(context, context.getString(R.string.ERROR_GENERICO), Toast.LENGTH_LONG).show();
         }
 

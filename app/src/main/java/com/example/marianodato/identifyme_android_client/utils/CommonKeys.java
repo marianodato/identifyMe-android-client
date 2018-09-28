@@ -27,4 +27,5 @@ public interface CommonKeys {
     String STATUS_ENROLLED = "enrolled";
     String STATUS_PENDING = "pending";
     String STATUS_UNENROLLED = "unenrolled";
+    String LOG_ERROR = "ERROR: ";
 }

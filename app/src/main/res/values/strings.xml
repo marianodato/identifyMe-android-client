@@ -1,6 +1,6 @@
 <resources>
     <string name="APP_NAME">identifyMe</string>
-    <string name="ERROR_GENERICO">Ups! Algo salio mal...</string>
+    <string name="ERROR_GENERICO">Ups! Algo salió mal…</string>
     <string name="INICIAR_SESION">Iniciar sesión</string>
     <string name="SESION_FINALIZADA">Sesión finalizada!</string>
     <string name="USUARIOS">Usuarios</string>
@@ -11,7 +11,7 @@
     <string name="CAMPO_NOMBRE_OBLIGATORIO">El campo nombre es obligatorio!</string>
     <string name="CAMPO_DNI_OBLIGATORIO">El campo dni es obligatorio!</string>
     <string name="CAMPO_EMAIL_INCORRECTO">Valor incorrecto para el campo email! Debes ingresar un mail válido</string>
-    <string name="CAMPO_TELEFONO_INCORRECTO">Valor incorrecto para el campo teléfono! Formato: +54(11)1234-5678</string>
+    <string name="CAMPO_TELEFONO_INCORRECTO">Valor incorrecto para el campo teléfono! Formato: +54(11)1234–5678</string>
     <string name="VALOR_INCORRECTO_CAMPO_USUARIO">Valor incorrecto para el campo usuario! Formato: Sólo un caracter especial (._-) permitido y no debe estar en los extremos. El primer caracter no puede ser numérico. Todos los demás caracteres permitidos son letras y números. La longitud total debe estar entre 6 y 20 caracteres</string>
     <string name="VALOR_INCORRECTO_CAMPO_CLAVE">Valor incorrecto para el campo clave! Formato: Mínimo 8 caracteres, al menos 1 en mayúscula, 1 en minúscula, 1 número y 1 caracter especial</string>
     <string name="USUARIO_NO_PUEDE_SER_IGUAL_CLAVE">El usuario no puede ser igual a la clave!</string>
@@ -87,4 +87,5 @@
     <string name="GUARDAR">GUARDAR</string>
     <string name="ELIMINAR">ELIMINAR</string>
     <string name="SALIR">Salir</string>
+    <string name="NO_HAY_RESULTADOS">No hay resultados</string>
 </resources>

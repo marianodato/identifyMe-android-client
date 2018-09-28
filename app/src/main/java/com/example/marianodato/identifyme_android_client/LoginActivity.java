@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -28,7 +29,8 @@ public class LoginActivity extends AppCompatActivity implements CommonKeys {
     private EditText edtUserLoginUsername;
     private EditText edtUserLoginPassword;
     private Button btnLogin;
-    private UserService userService;
+
+    private static UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements CommonKeys {
         Call<UserLogin> call = userService.doLogin(userLoginRequest);
         call.enqueue(new Callback<UserLogin>() {
             @Override
-            public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
+            public void onResponse(@NonNull Call<UserLogin> call, @NonNull Response<UserLogin> response) {
                 if (response.isSuccessful()) {
                     UserLogin userLoginResponse = response.body();
 
@@ -110,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements CommonKeys {
             }
 
             @Override
-            public void onFailure(Call<UserLogin> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserLogin> call, @NonNull Throwable t) {
                 onFailureGenericLogic(LoginActivity.this, t);
                 btnLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 btnLogin.setEnabled(true);

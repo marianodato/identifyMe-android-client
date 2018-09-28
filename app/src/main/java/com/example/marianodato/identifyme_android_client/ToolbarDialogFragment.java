@@ -18,7 +18,6 @@ public class ToolbarDialogFragment extends DialogFragment implements CommonKeys 
 
     public interface NoticeDialogListener {
         void onDialogPositiveClick(DialogFragment dialog, String dialogType, int selectedItemIndex);
-
         void onDialogNegativeClick(DialogFragment dialog, String dialogType, int selectedItemIndex);
     }
 
@@ -28,7 +27,7 @@ public class ToolbarDialogFragment extends DialogFragment implements CommonKeys 
         try {
             noticeDialogListener = (NoticeDialogListener) activity;
         } catch (ClassCastException e) {
-            Log.e("ERROR: ", e.getMessage());
+            Log.e(LOG_ERROR, e.getMessage());
             throw new ClassCastException(activity.toString()
                     + " must implement NoticeDialogListener");
         }

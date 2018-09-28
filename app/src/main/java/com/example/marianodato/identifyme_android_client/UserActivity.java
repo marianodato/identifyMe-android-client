@@ -3,6 +3,7 @@ package com.example.marianodato.identifyme_android_client;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -28,21 +29,12 @@ import static com.example.marianodato.identifyme_android_client.remote.APIUtils.
 
 public class UserActivity extends AppCompatActivity implements CommonKeys {
 
-    private TextView txtUserId;
-    private TextView txtUserFingerprintId;
-    private TextView txtUserFingerprintStatus;
-    private TextView txtUserDateCreated;
-    private TextView txtUserLastUpdated;
-    private EditText edtUserId;
     private EditText edtUserUsername;
     private EditText edtUserPassword;
     private EditText edtUserName;
-    private EditText edtUserFingerprintId;
     private EditText edtUserDni;
     private EditText edtUserEmail;
     private EditText edtUserPhoneNumber;
-    private EditText edtUserDateCreated;
-    private EditText edtUserLastUpdated;
     private RadioGroup radioGrpUserGender;
     private RadioGroup radioGrpUserIsAdmin;
     private RadioGroup radioGrpUserFingerprintStatus;
@@ -80,21 +72,21 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        txtUserId = findViewById(R.id.txtUserId);
-        txtUserFingerprintId = findViewById(R.id.txtUserFingerprintId);
-        txtUserFingerprintStatus = findViewById(R.id.txtUserFingerprintStatus);
-        txtUserDateCreated = findViewById(R.id.txtUserDateCreated);
-        txtUserLastUpdated = findViewById(R.id.txtUserLastUpdated);
-        edtUserId = findViewById(R.id.edtUserId);
+        TextView txtUserId = findViewById(R.id.txtUserId);
+        TextView txtUserFingerprintId = findViewById(R.id.txtUserFingerprintId);
+        TextView txtUserFingerprintStatus = findViewById(R.id.txtUserFingerprintStatus);
+        TextView txtUserDateCreated = findViewById(R.id.txtUserDateCreated);
+        TextView txtUserLastUpdated = findViewById(R.id.txtUserLastUpdated);
+        EditText edtUserId = findViewById(R.id.edtUserId);
         edtUserUsername = findViewById(R.id.edtUserUsername);
         edtUserPassword = findViewById(R.id.edtUserPassword);
         edtUserName = findViewById(R.id.edtUserName);
-        edtUserFingerprintId = findViewById(R.id.edtUserFingerprintId);
+        EditText edtUserFingerprintId = findViewById(R.id.edtUserFingerprintId);
         edtUserEmail = findViewById(R.id.edtUserEmail);
         edtUserPhoneNumber = findViewById(R.id.edtUserPhoneNumber);
         edtUserDni = findViewById(R.id.edtUserDni);
-        edtUserDateCreated = findViewById(R.id.edtUserDateCreated);
-        edtUserLastUpdated = findViewById(R.id.edtUserLastUpdated);
+        EditText edtUserDateCreated = findViewById(R.id.edtUserDateCreated);
+        EditText edtUserLastUpdated = findViewById(R.id.edtUserLastUpdated);
         radioGrpUserGender = findViewById(R.id.radioGrpUserGender);
         radioGrpUserIsAdmin = findViewById(R.id.radioGrpUserIsAdmin);
         radioGrpUserFingerprintStatus = findViewById(R.id.radioGrpUserFingerprintStatus);
@@ -146,12 +138,16 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
                 radioGrpUserIsAdmin.check(R.id.radioIsNotAdmin);
             }
 
-            if (userFingerprintStatus.equals(STATUS_ENROLLED)) {
-                radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusEnrolled);
-            } else if (userFingerprintStatus.equals(STATUS_PENDING)) {
-                radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusPending);
-            } else {
-                radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusUnenrolled);
+            switch (userFingerprintStatus) {
+                case STATUS_ENROLLED:
+                    radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusEnrolled);
+                    break;
+                case STATUS_PENDING:
+                    radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusPending);
+                    break;
+                default:
+                    radioGrpUserFingerprintStatus.check(R.id.radioFingerprintStatusUnenrolled);
+                    break;
             }
 
         } else {
@@ -197,13 +193,13 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
                     } else {
                         userFingerprintStatus = STATUS_UNENROLLED;
                     }
-                    if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
+                    if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, true)) {
                         userPassword = userPassword.equals(NULL_STRING) ? null : userPassword;
                         User user = new User(userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin, userFingerprintStatus);
                         updateUser(Long.parseLong(userId), user);
                     }
                 } else {
-                    if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, isPutForm)) {
+                    if (validateUserFields(userUsername, userPassword, userName, userDni, userEmail, userPhoneNumber, false)) {
                         User user = new User(userUsername, userPassword, userName, Long.parseLong(userDni), userGender, userEmail, userPhoneNumber, userIsAdmin);
                         addUser(user);
                     }
@@ -276,7 +272,7 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
         Call<User> call = userService.addUser(prefs.getString(ACCESS_TOKEN_KEY, null), user);
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(UserActivity.this, getString(R.string.USUARIO_CREADO), Toast.LENGTH_LONG).show();
                     onBackPressed();
@@ -288,7 +284,7 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 onFailureGenericLogic(UserActivity.this, t);
                 btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 btnSave.setEnabled(true);
@@ -300,7 +296,7 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
         Call<User> call = userService.updateUser(userId, prefs.getString(ACCESS_TOKEN_KEY, null), user);
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(UserActivity.this, getString(R.string.USUARIO_MODIFICADO), Toast.LENGTH_LONG).show();
                     onBackPressed();
@@ -314,7 +310,7 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 onFailureGenericLogic(UserActivity.this, t);
                 btnSave.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 btnSave.setEnabled(true);
@@ -328,7 +324,7 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
         Call<User> call = userService.deleteUser(userId, prefs.getString(ACCESS_TOKEN_KEY, null));
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(UserActivity.this, getString(R.string.USUARIO_ELIMINADO), Toast.LENGTH_LONG).show();
                     onBackPressed();
@@ -340,7 +336,7 @@ public class UserActivity extends AppCompatActivity implements CommonKeys {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 onFailureGenericLogic(UserActivity.this, t);
                 btnDel.setBackgroundColor(getResources().getColor(R.color.colorRed));
                 btnDel.setEnabled(true);

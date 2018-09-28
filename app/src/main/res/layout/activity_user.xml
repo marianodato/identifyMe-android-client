@@ -32,7 +32,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/ID_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserId"
@@ -50,7 +50,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/USUARIO_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserUsername"
@@ -68,7 +68,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/CLAVE_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserPassword"
@@ -86,7 +86,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/NOMBRE_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserName"
@@ -104,7 +104,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/ID_HUELLA_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserFingerprintId"
@@ -122,7 +122,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/ESTADO_HUELLA_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <RadioGroup
                 android:id="@+id/radioGrpUserFingerprintStatus"
@@ -140,7 +140,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:text="@string/NO_CARGADA" />
 
                 <RadioButton
@@ -152,7 +152,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:text="@string/PENDIENTE" />
 
                 <RadioButton
@@ -164,7 +164,7 @@
                     android:layout_marginLeft="10dp"
                     android:checked="false"
                     android:layout_weight="1"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:text="@string/CARGADA" />
             </RadioGroup>
 
@@ -176,7 +176,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/DNI_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserDni"
@@ -194,7 +194,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/GENERO_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <RadioGroup
                 android:id="@+id/radioGrpUserGender"
@@ -210,7 +210,7 @@
                     android:layout_gravity="start"
                     android:checked="true"
                     android:layout_weight="1"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:layout_marginStart="50dp"
                     android:layout_marginLeft="50dp"
                     android:text="@string/HOMBRE" />
@@ -224,7 +224,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="80dp"
                     android:layout_marginLeft="80dp"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:text="@string/MUJER" />
             </RadioGroup>
 
@@ -236,7 +236,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/EMAIL_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserEmail"
@@ -254,7 +254,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/TELEFONO_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserPhoneNumber"
@@ -272,7 +272,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/ADMIN_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <RadioGroup
                 android:id="@+id/radioGrpUserIsAdmin"
@@ -290,7 +290,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="50dp"
                     android:layout_marginLeft="50dp"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:text="@string/SI" />
 
                 <RadioButton
@@ -302,7 +302,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="80dp"
                     android:layout_marginLeft="80dp"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:text="@string/NO" />
             </RadioGroup>
 
@@ -314,7 +314,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:text="@string/CREADO_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserDateCreated"
@@ -332,7 +332,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/MODIFICADO_INPUT"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/edtUserLastUpdated"
