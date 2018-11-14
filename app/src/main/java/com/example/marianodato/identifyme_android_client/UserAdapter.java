@@ -32,27 +32,13 @@ class UserAdapter extends ArrayAdapter<User> implements CommonKeys {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_user, parent, false);
 
-        TextView txtUserId = rowView.findViewById(R.id.txtUserId);
         TextView txtUserUsername = rowView.findViewById(R.id.txtUserUsername);
         TextView txtUserName = rowView.findViewById(R.id.txtUserName);
-        TextView txtUserFingerprintId = rowView.findViewById(R.id.txtUserFingerprintId);
         TextView txtUserFingerprintStatus = rowView.findViewById(R.id.txtUserFingerprintStatus);
-        TextView txtUserDni = rowView.findViewById(R.id.txtUserDni);
-        TextView txtUserGender = rowView.findViewById(R.id.txtUserGender);
-        TextView txtUserEmail = rowView.findViewById(R.id.txtUserEmail);
-        TextView txtUserPhoneNumber = rowView.findViewById(R.id.txtUserPhoneNumber);
         TextView txtUserIsAdmin = rowView.findViewById(R.id.txtUserIsAdmin);
-        TextView txtUserDateCreated = rowView.findViewById(R.id.txtUserDateCreated);
-        TextView txtUserLastUpdated = rowView.findViewById(R.id.txtUserLastUpdated);
 
-        txtUserId.setText(context.getString(R.string.ID_VALOR, users.get(pos).getId()));
         txtUserUsername.setText(context.getString(R.string.USUARIO_VALOR, users.get(pos).getUsername()));
         txtUserName.setText(context.getString(R.string.NOMBRE_VALOR, users.get(pos).getName()));
-        if (users.get(pos).getFingerprintId() != null) {
-            txtUserFingerprintId.setText(context.getString(R.string.ID_HUELLA_VALOR, users.get(pos).getFingerprintId()));
-        } else {
-            txtUserFingerprintId.setText(context.getString(R.string.ID_HUELLA_VACIO));
-        }
 
         switch (users.get(pos).getFingerprintStatus()) {
             case STATUS_ENROLLED:
@@ -66,13 +52,7 @@ class UserAdapter extends ArrayAdapter<User> implements CommonKeys {
                 break;
         }
 
-        txtUserDni.setText(context.getString(R.string.DNI_VALOR, users.get(pos).getDni()));
-        txtUserGender.setText(context.getString(R.string.GENERO_VALOR, users.get(pos).getGender().equals(MALE_GENDER) ? context.getString(R.string.HOMBRE) : context.getString(R.string.MUJER)));
-        txtUserEmail.setText(context.getString(R.string.EMAIL_VALOR, users.get(pos).getEmail()));
-        txtUserPhoneNumber.setText(context.getString(R.string.TELEFONO_VALOR, users.get(pos).getPhoneNumber()));
         txtUserIsAdmin.setText(context.getString(R.string.ADMIN_VALOR, users.get(pos).getAdmin() ? context.getString(R.string.SI) : context.getString(R.string.NO)));
-        txtUserDateCreated.setText(context.getString(R.string.CREADO_VALOR, users.get(pos).getDateCreated()));
-        txtUserLastUpdated.setText(context.getString(R.string.MODIFICADO_VALOR, users.get(pos).getLastUpdated()));
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override

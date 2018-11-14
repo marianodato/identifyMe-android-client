@@ -1,118 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-
-    <TextView
-        android:id="@+id/txtUserId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp"
-        />
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/txtUserUsername"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
+        android:maxLines="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintHorizontal_weight="0.35"
+        app:layout_constraintLeft_toLeftOf="@+id/parent"
+        app:layout_constraintRight_toLeftOf="@+id/txtUserName"
+        tools:text="PRUEBA" />
 
     <TextView
         android:id="@+id/txtUserName"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
-
-    <TextView
-        android:id="@+id/txtUserFingerprintId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
+        android:maxLines="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintHorizontal_weight="0.35"
+        app:layout_constraintLeft_toRightOf="@+id/txtUserUsername"
+        app:layout_constraintRight_toLeftOf="@+id/txtUserFingerprintStatus"
+        tools:text="PRUEBA" />
 
     <TextView
         android:id="@+id/txtUserFingerprintStatus"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
-
-    <TextView
-        android:id="@+id/txtUserDni"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
-
-    <TextView
-        android:id="@+id/txtUserGender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
-
-    <TextView
-        android:id="@+id/txtUserEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
-
-    <TextView
-        android:id="@+id/txtUserPhoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:maxLines="1"
+        app:layout_constraintHorizontal_weight="0.2"
+        app:layout_constraintLeft_toRightOf="@+id/txtUserName"
+        app:layout_constraintRight_toLeftOf="@+id/txtUserIsAdmin"
+        tools:text="PRUEBA" />
 
     <TextView
         android:id="@+id/txtUserIsAdmin"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
+        android:maxLines="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintHorizontal_weight="0.1"
+        app:layout_constraintLeft_toRightOf="@+id/txtUserFingerprintStatus"
+        app:layout_constraintRight_toRightOf="@+id/parent"
+        tools:text="PRUEBA" />
 
-    <TextView
-        android:id="@+id/txtUserDateCreated"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
-
-    <TextView
-        android:id="@+id/txtUserLastUpdated"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp"
-        />
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
