@@ -64,6 +64,9 @@ public class LoginActivity extends AppCompatActivity implements CommonKeys {
                 if (validateLoginFields(userLoginUsername, userLoginPassword)) {
                     UserLogin userLoginRequest = new UserLogin(userLoginUsername, userLoginPassword);
                     doLogin(userLoginRequest);
+                } else {
+                    btnLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    btnLogin.setEnabled(true);
                 }
             }
         });

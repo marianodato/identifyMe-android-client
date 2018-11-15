@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,45 +39,58 @@ class UserAdapter extends ArrayAdapter<User> implements CommonKeys {
         TextView txtUserFingerprintStatus = rowView.findViewById(R.id.txtUserFingerprintStatus);
         TextView txtUserIsAdmin = rowView.findViewById(R.id.txtUserIsAdmin);
 
-        txtUserUsername.setText(context.getString(R.string.USUARIO_VALOR, users.get(pos).getUsername()));
-        txtUserName.setText(context.getString(R.string.NOMBRE_VALOR, users.get(pos).getName()));
+        if (pos == 0) {
+            final ConstraintLayout constraintLayout = rowView.findViewById(R.id.parent);
+            constraintLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGrey));
+            txtUserUsername.setText(context.getString(R.string.USUARIO_SORT));
+            txtUserUsername.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+            txtUserName.setText(context.getString(R.string.NOMBRE_SORT));
+            txtUserName.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+            txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_SORT_CORTO));
+            txtUserFingerprintStatus.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+            txtUserIsAdmin.setText(context.getString(R.string.ADMIN_SORT));
+            txtUserIsAdmin.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+        } else {
+            txtUserUsername.setText(context.getString(R.string.USUARIO_VALOR, users.get(pos).getUsername()));
+            txtUserName.setText(context.getString(R.string.NOMBRE_VALOR, users.get(pos).getName()));
 
-        switch (users.get(pos).getFingerprintStatus()) {
-            case STATUS_ENROLLED:
-                txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_CARGADA));
-                break;
-            case STATUS_PENDING:
-                txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_PENDIENTE));
-                break;
-            default:
-                txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_NO_CARGADA));
-                break;
-        }
-
-        txtUserIsAdmin.setText(context.getString(R.string.ADMIN_VALOR, users.get(pos).getAdmin() ? context.getString(R.string.SI) : context.getString(R.string.NO)));
-
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, UserActivity.class);
-
-                intent.putExtra(USER_ID, String.valueOf(users.get(pos).getId()));
-                intent.putExtra(USER_USERNAME, String.valueOf(users.get(pos).getUsername()));
-                intent.putExtra(USER_PASSWORD, String.valueOf(users.get(pos).getPassword()));
-                intent.putExtra(USER_NAME, String.valueOf(users.get(pos).getName()));
-                intent.putExtra(USER_FINGERPRINT_ID, users.get(pos).getFingerprintId() != null ? String.valueOf(users.get(pos).getFingerprintId()) : context.getString(R.string.GUION));
-                intent.putExtra(USER_FINGERPRINT_STATUS, String.valueOf(users.get(pos).getFingerprintStatus()));
-                intent.putExtra(USER_DNI, String.valueOf(users.get(pos).getDni()));
-                intent.putExtra(USER_GENDER, String.valueOf(users.get(pos).getGender()));
-                intent.putExtra(USER_EMAIL, String.valueOf(users.get(pos).getEmail()));
-                intent.putExtra(USER_PHONE_NUMBER, String.valueOf(users.get(pos).getPhoneNumber()));
-                intent.putExtra(USER_IS_ADMIN, users.get(pos).getAdmin());
-                intent.putExtra(USER_DATE_CREATED, String.valueOf(users.get(pos).getDateCreated()));
-                intent.putExtra(USER_LAST_UPDATED, String.valueOf(users.get(pos).getLastUpdated()));
-                intent.putExtra(IS_PUT_FORM, true);
-                context.startActivity(intent);
+            switch (users.get(pos).getFingerprintStatus()) {
+                case STATUS_ENROLLED:
+                    txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_CARGADA));
+                    break;
+                case STATUS_PENDING:
+                    txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_PENDIENTE));
+                    break;
+                default:
+                    txtUserFingerprintStatus.setText(context.getString(R.string.ESTADO_HUELLA_NO_CARGADA));
+                    break;
             }
-        });
+
+            txtUserIsAdmin.setText(context.getString(R.string.ADMIN_VALOR, users.get(pos).getAdmin() ? context.getString(R.string.SI) : context.getString(R.string.NO)));
+
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, UserActivity.class);
+
+                    intent.putExtra(USER_ID, String.valueOf(users.get(pos).getId()));
+                    intent.putExtra(USER_USERNAME, String.valueOf(users.get(pos).getUsername()));
+                    intent.putExtra(USER_PASSWORD, String.valueOf(users.get(pos).getPassword()));
+                    intent.putExtra(USER_NAME, String.valueOf(users.get(pos).getName()));
+                    intent.putExtra(USER_FINGERPRINT_ID, users.get(pos).getFingerprintId() != null ? String.valueOf(users.get(pos).getFingerprintId()) : context.getString(R.string.GUION));
+                    intent.putExtra(USER_FINGERPRINT_STATUS, String.valueOf(users.get(pos).getFingerprintStatus()));
+                    intent.putExtra(USER_DNI, String.valueOf(users.get(pos).getDni()));
+                    intent.putExtra(USER_GENDER, String.valueOf(users.get(pos).getGender()));
+                    intent.putExtra(USER_EMAIL, String.valueOf(users.get(pos).getEmail()));
+                    intent.putExtra(USER_PHONE_NUMBER, String.valueOf(users.get(pos).getPhoneNumber()));
+                    intent.putExtra(USER_IS_ADMIN, users.get(pos).getAdmin());
+                    intent.putExtra(USER_DATE_CREATED, String.valueOf(users.get(pos).getDateCreated()));
+                    intent.putExtra(USER_LAST_UPDATED, String.valueOf(users.get(pos).getLastUpdated()));
+                    intent.putExtra(IS_PUT_FORM, true);
+                    context.startActivity(intent);
+                }
+            });
+        }
 
         return rowView;
     }

@@ -47,6 +47,7 @@
     <string name="GENERO_SORT">Género</string>
     <string name="EMAIL_SORT">Email</string>
     <string name="TELEFONO_SORT">Teléfono</string>
+    <string name="ESTADO_HUELLA_SORT_CORTO">Huella</string>
     <string name="ADMIN_SORT">Admin</string>
     <string name="CREADO_SORT">Creado</string>
     <string name="MODIFICADO_SORT">Modificado</string>

@@ -308,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements CommonKeys, Toolb
                 if(response.isSuccessful()){
                     total = response.body().getPaging().getTotal();
                     list = response.body().getResults();
+                    list.add(0, new User());
                     userAdapter = new UserAdapter(MainActivity.this, R.layout.list_user, list);
                     listView.setAdapter(userAdapter);
                     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
